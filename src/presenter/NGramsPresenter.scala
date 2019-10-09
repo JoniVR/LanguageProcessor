@@ -1,0 +1,6 @@
+package presenter
+
+class NGramsPresenter
+{
+
+}
