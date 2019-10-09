@@ -1,0 +1,34 @@
+Deens:
+volledig     -> abcdefghijklmnopqrstuvwxyzæåø
+klinkers     -> aeiouæåø
+medeklinkers -> bcdfghjklmnpqrstvwxyz
+
+Fins:
+volledig     -> abcdefghijklmnopqrstuvwxyzäö
+klinkers     -> aeiouäö
+medeklinkers -> bcdfghjklmnpqrstvwxyz
+
+Italiaans
+volledig     -> abcdefghilmnopqrstuvz
+klinkers     -> aeiou
+medeklinkers -> bcdfghlmnpqrstvz
+
+Nederlands
+volledig     -> abcdefghijklmnopqrstuvwxyz
+klinkers     -> aeiou
+medeklinkers -> bcdfghjklmnpqrstvwxyz
+
+Portugees
+volledig     -> abcdefghijklmnopqrstuvwxyz
+klinkers     -> aeiou
+medeklinkers -> bcdfghjklmnpqrstvwxyz
+
+Sloveens
+volledig     -> abcčdefghijklmnoprsštuvzž
+klinkers     -> aeiou
+medeklinkers -> bcčdfghjklmnprsštvzž
+
+Spaans:
+volledig     -> abcdefghijklmnñopqrstuvwxyz
+klinkers     -> aeiou
+medeklinkers -> bcdfghjklmnñpqrstvwxyz
