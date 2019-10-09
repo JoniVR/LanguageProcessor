@@ -1,0 +1,9 @@
+.root {
+    -fx-pref-width: 800px;
+    -fx-pref-height: 600px;
+    /* -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, DarkSlateGray, Black); */
+}
+
+#hello {
+    -fx-font-size: 55px;
+}
