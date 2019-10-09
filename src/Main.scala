@@ -18,12 +18,16 @@ class Main extends Application
   {
     val nGramsPresenter = new NGramsPresenter
     val nGramsView = new NGramsView(nGramsPresenter)
-
     val scene: Scene = new Scene(nGramsView)
     // this.getClass.getResource("/resources/style.css").toExternalForm
 
     primaryStage.setTitle("NGram Analyser")
-    primaryStage.setMaximized(true)
+    primaryStage.setMaximized(false)
+
+    primaryStage.setResizable(false)
+    primaryStage.setWidth(1280)
+    primaryStage.setHeight(800)
+
     primaryStage.setScene(scene)
     primaryStage.show
   }
