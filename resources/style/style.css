@@ -3,10 +3,9 @@
 }
 
 .tab-pane {
-    -fx-end-margin: 10px;
-    -fx-start-margin: 10px;
+
 }
 
-#hello {
+.hello {
     -fx-font-size: 55px;
 }

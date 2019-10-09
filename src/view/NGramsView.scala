@@ -1,39 +1,74 @@
 package view
 
-import javafx.scene.control.{Label, TabPane}
+import javafx.scene.control.{Label, Menu, MenuBar, MenuItem, Tab, TabPane}
 import presenter.NGramsPresenter
-import javafx.scene.control.Tab
-import javafx.scene.control.TabPane
 import javafx.scene.layout.BorderPane
+import model.Languages
 
-class NGramsView(NGramsPresenter: NGramsPresenter) extends BorderPane
-{
-  // Adding css stylesheet, found in the resources folder
-  val css : String = this.getClass.getClassLoader.getResource("style/style.css").toExternalForm
+class NGramsView(NGramsPresenter: NGramsPresenter) extends BorderPane {
+
+  /*
+   * Adding CSS stylesheet
+   */
+  val css: String = this.getClass.getClassLoader.getResource("style/style.css").toExternalForm
   getStylesheets.add(css)
 
-  // Hello world labels
-  val label1 = new Label("Hello,")
-  val label2 = new Label(" World!")
-  label1.setId("hello")
-  label2.setId("hello")
+  /*
+   * Creating nodes and adding them to screen
+   */
+  val fileMenu = new Menu("File")
+  val uploadItem = new MenuItem("Upload")
+  val resetItem = new MenuItem("Reset")
+  fileMenu.getItems.addAll(uploadItem, resetItem)
 
-  // Language tabs
-  val tab1 = new Tab
-  tab1.setText("Hello")
-  tab1.setContent(label1)
-  tab1.setClosable(false)
+  val optionsMenu = new Menu("Options")
+  val prefItem = new MenuItem("Preferences")
+  optionsMenu.getItems.add(prefItem)
 
-  val tab2 = new Tab
-  tab2.setText("World")
-  tab2.setContent(label2)
-  tab2.setClosable(false)
+  val helpMenu = new Menu("Help")
+  val aboutItem = new MenuItem("About")
+  helpMenu.getItems.add(aboutItem)
 
-  // Tab pane
+  val menuBar = new MenuBar
+  menuBar.getMenus.addAll(fileMenu, optionsMenu, helpMenu)
+  this.setTop(menuBar)
+
   val tabPane = new TabPane
   tabPane.getStyleClass.add("tab-pane")
-  tabPane.getTabs.add(tab1)
-  tabPane.getTabs.add(tab2)
-
   this.setCenter(tabPane)
+
+  /*
+   * Create tabs for every language and add to TabPane
+   * TODO: Create a custom Pane implementation to add to the tabs
+   */
+  Languages.values.foreach(lang => {
+    val tab = new Tab
+    tab.setText(lang.name)
+    tab.setClosable(false)
+
+    val lblHello = new Label(s"Hello, ${lang.name}!")
+    lblHello.getStyleClass.add("hello")
+    tab.setContent(lblHello)
+
+    tabPane.getTabs.add(tab)
+  })
+
+  /*
+   * Adding event handlers to the nodes
+   */
+  uploadItem.setOnAction(e => {
+    println("Hello from Upload!")
+  })
+
+  resetItem.setOnAction(e => {
+    println("Hello from Reset!")
+  })
+
+  prefItem.setOnAction(e => {
+    println("Hello from Preferences!")
+  })
+
+  aboutItem.setOnAction(e => {
+    println("Hello from About!")
+  })
 }
