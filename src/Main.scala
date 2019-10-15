@@ -29,8 +29,8 @@ class Main extends Application
     val fileIterator = ioManager.readFile("files/europarl/dutch/Alldata Dutch.txt")
     if (fileIterator.isDefined) {
       fileIterator.get
-        .map(preprocessor.removeSpaces)
         .filter(!preprocessor.findSpaceLines(_))
+        .map(preprocessor.removeSpaces)
         .foreach(println)
     }
 
