@@ -23,4 +23,22 @@ class Preprocessor {
   def findSpaceLines(line: String): Boolean = {
     line.isBlank
   }
+
+  def logWordCount(list: List[String]) {
+    // TODO: actually log instead of print
+    println(
+      list
+        .flatMap(_.split("\\W+"))
+        .length
+    )
+  }
+
+  def logPunctuationMarkCount(list: List[String]) {
+    // TODO: actually log instead of print
+    val regex = "\\s+(?=\\p{Punct})".r
+
+    println(
+
+    )
+  }
 }

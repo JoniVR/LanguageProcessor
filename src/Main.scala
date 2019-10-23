@@ -28,12 +28,15 @@ class Main extends Application
     val preprocessor = new Preprocessor()
     val fileIterator = ioManager.readFile("files/europarl/dutch/Alldata Dutch.txt")
     if (fileIterator.isDefined) {
-      fileIterator.get
+      // preprocessing spaces, loading processed list in memory (only once!)
+      val processedList = fileIterator.get
         .filter(!preprocessor.findSpaceLines(_))
         .map(preprocessor.removeSpaces)
-        .foreach(println)
+        .to(List)
+      // logging part
+      preprocessor.logWordCount(processedList)
+      preprocessor.logPunctuationMarkCount(processedList)
     }
-
     primaryStage.setTitle("NGram Analyser")
     primaryStage.setMaximized(true)
     primaryStage.setScene(scene)
