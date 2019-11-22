@@ -1,8 +1,8 @@
 import javafx.application.Application
+import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
+import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
-import presenter.NGramsPresenter
-import view.NGramsView
 
 object Main
 {
@@ -16,10 +16,9 @@ class Main extends Application
 {
   override def start(primaryStage: Stage)
   {
-    val nGramsPresenter = new NGramsPresenter
-    val nGramsView = new NGramsView(nGramsPresenter)
-    val scene: Scene = new Scene(nGramsView)
-    // this.getClass.getResource("/resources/style.css").toExternalForm
+    val loader = new FXMLLoader(getClass.getResource("view/MainScene.fxml"))
+    val mainPane: BorderPane = loader.load()
+    val scene: Scene = new Scene(mainPane)
 
     primaryStage.setTitle("NGram Analyser")
     primaryStage.setMaximized(false)
@@ -29,6 +28,6 @@ class Main extends Application
     primaryStage.setHeight(800)
 
     primaryStage.setScene(scene)
-    primaryStage.show
+    primaryStage.show()
   }
 }
