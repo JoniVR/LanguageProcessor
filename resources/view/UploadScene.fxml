@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="uploadWindow" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="controller.UploadController">
+  <bottom>
+    <Button fx:id="btnUpload" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#uploadClicked" text="Upload" BorderPane.alignment="CENTER">
+      <font>
+        <Font size="18.0" />
+      </font>
+      <BorderPane.margin>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </BorderPane.margin>
+    </Button>
+  </bottom>
+  <center>
+    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <children>
+        <Button fx:id="btnSelectFile" mnemonicParsing="false" onAction="#fileSelectClicked" text="Select file" VBox.vgrow="ALWAYS">
+          <VBox.margin>
+            <Insets bottom="10.0" />
+          </VBox.margin>
+        </Button>
+        <Label fx:id="lblFileSelect" text="No file selected" />
+      </children>
+    </VBox>
+  </center>
+</BorderPane>
