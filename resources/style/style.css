@@ -1,0 +1,11 @@
+.root {
+    /* -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, DarkSlateGray, Black); */
+}
+
+.tab-pane {
+
+}
+
+.hello {
+    -fx-font-size: 55px;
+}

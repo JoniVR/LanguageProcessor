@@ -1,6 +1,0 @@
-package presenter
-
-class NGramsPresenter
-{
-
-}
