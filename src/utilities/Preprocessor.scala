@@ -24,21 +24,17 @@ class Preprocessor {
     line.isBlank
   }
 
-  def logWordCount(list: List[String]) {
-    // TODO: actually log instead of print
-    println(
-      list
-        .flatMap(_.split("\\W+"))
-        .length
-    )
+  // TODO: actually log instead of return
+  def getWordCount(list: List[String]): Long = {
+    list
+      .flatMap(_.split("\\W+"))
+      .length
   }
 
-  def logPunctuationMarkCount(list: List[String]) {
-    // TODO: actually log instead of print
-    // NEEDS TESTING!
+  // TODO: actually log instead of return
+  // TODO: Actually probably needs fixing too.
+  def getPunctuationMarkCount(list: List[String]): Long = {
     val regex = "\\s+(?=\\p{Punct})".r
-    println(
-//      list.filterNot(regex.matches(_)).length
-    )
+    list.filterNot(regex.matches(_)).length
   }
 }
