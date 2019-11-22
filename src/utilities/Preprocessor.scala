@@ -35,10 +35,10 @@ class Preprocessor {
 
   def logPunctuationMarkCount(list: List[String]) {
     // TODO: actually log instead of print
+    // NEEDS TESTING!
     val regex = "\\s+(?=\\p{Punct})".r
-
     println(
-
+//      list.filterNot(regex.matches(_)).length
     )
   }
 }
