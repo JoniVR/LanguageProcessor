@@ -1,4 +1,5 @@
 *.class
 *.log
 workspace.xml
+uiDesigner.xml
 out/*

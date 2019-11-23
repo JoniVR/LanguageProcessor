@@ -41,12 +41,13 @@ class MainPresenter {
     println("about clicked")
   }
 
-  private def preProcessFile(it: Iterator[String]): Unit = {
-    // preprocessing spaces, loading processed list in memory (only once!)
+  private def preProcessFile(data: Vector[String]): Unit = {
+    // using view on a vector is a lot more memory efficient compared to using a list and stream
+    // see: https://docs.scala-lang.org/tutorials/FAQ/stream-view-iterator.html
     val processedList =
-      it.filter(!preprocessor.findSpaceLines(_))
+      data.view.filter(!preprocessor.findSpaceLines(_))
         .map(preprocessor.removeSpaces)
-        .to(List)
+        .to(Vector)
     // TODO: actually log
     println(processedList)
     preprocessor.getWordCount(processedList)

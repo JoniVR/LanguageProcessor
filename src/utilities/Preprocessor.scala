@@ -25,7 +25,7 @@ class Preprocessor {
   }
 
   // TODO: actually log instead of return
-  def getWordCount(list: List[String]): Long = {
+  def getWordCount(list: Vector[String]): Long = {
     list
       .flatMap(_.split("\\W+"))
       .length
@@ -33,7 +33,7 @@ class Preprocessor {
 
   // TODO: actually log instead of return
   // TODO: Actually probably needs fixing too.
-  def getPunctuationMarkCount(list: List[String]): Long = {
+  def getPunctuationMarkCount(list: Vector[String]): Long = {
     val regex = "\\s+(?=\\p{Punct})".r
     list.filterNot(regex.matches(_)).length
   }

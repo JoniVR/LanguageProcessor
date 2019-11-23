@@ -26,12 +26,12 @@ class PreprocessorTests extends FunSuite {
   test("getWordCount") {
     val preprocessor = new Preprocessor()
     val stringToTest =
-      List("Dit is een testzin, met veel nutteloze.. leestekens?",
+      Vector("Dit is een testzin, met veel nutteloze.. leestekens?",
       "Zodat we word count kunnen testen.",
       "Als we dit niet doen zijn we nooit zeker of de functie effectief werkt!")
     assert(preprocessor.getWordCount(stringToTest) == 28)
     val stringToTest2 =
-      List("Dit zijn nog een paar zinnen..",
+      Vector("Dit zijn nog een paar zinnen..",
       "Kwestie van zeker te zijn?",
       "We zullen ook-tussen de woorden zetten en zelfs- test.")
     assert(preprocessor.getWordCount(stringToTest2) == 21)
@@ -41,7 +41,7 @@ class PreprocessorTests extends FunSuite {
   test("getPunctuationMarkCount") {
     val preprocessor = new Preprocessor()
     val stringToTest =
-      List("Allemaal !? . , - ( ) lees-tekens',",
+      Vector("Allemaal !? . , - ( ) lees-tekens',",
         "hopelijk \" werkt het ook ")
     assert(preprocessor.getPunctuationMarkCount(stringToTest) == 10)
   }
