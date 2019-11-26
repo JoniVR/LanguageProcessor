@@ -19,8 +19,8 @@ class MainPresenter {
     try {
       val files = fileChooser.showOpenMultipleDialog(new Stage())
       files.forEach(f => {
-        val fileIterator = ioManager.readFile(f.getPath)
-        preProcessFile(fileIterator)
+        val fileVector = ioManager.readFile(f.getPath)
+        preProcessFile(fileVector)
       })
     }
     catch {
@@ -41,11 +41,11 @@ class MainPresenter {
     println("about clicked")
   }
 
-  private def preProcessFile(data: Vector[String]): Unit = {
+  private def preProcessFile(vector: Vector[String]): Unit = {
     // using view on a vector is a lot more memory efficient compared to using a list and stream
     // see: https://docs.scala-lang.org/tutorials/FAQ/stream-view-iterator.html
     val processedList =
-      data.view.filter(!preprocessor.findSpaceLines(_))
+      vector.view.filter(!preprocessor.findSpaceLines(_))
         .map(preprocessor.removeSpaces)
         .to(Vector)
     // TODO: actually log

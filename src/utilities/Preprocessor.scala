@@ -25,8 +25,8 @@ class Preprocessor {
   }
 
   // TODO: actually log instead of return
-  def getWordCount(list: Vector[String]): Long = {
-    list
+  def getWordCount(vector: Vector[String]): Long = {
+    vector
       .flatMap(_.split("\\W+"))
       .length
   }
