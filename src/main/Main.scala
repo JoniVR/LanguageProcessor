@@ -1,3 +1,5 @@
+package main
+
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -16,7 +18,7 @@ class Main extends Application
 {
   override def start(primaryStage: Stage)
   {
-    val loader = new FXMLLoader(getClass.getResource("view/MainScene.fxml"))
+    val loader = new FXMLLoader(getClass.getResource("../view/MainScene.fxml"))
     val mainPane: BorderPane = loader.load()
     val scene: Scene = new Scene(mainPane)
 

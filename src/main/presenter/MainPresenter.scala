@@ -1,9 +1,9 @@
-package presenter
+package main.presenter
 
 import javafx.fxml.FXML
 import javafx.scene.control.MenuItem
 import javafx.stage.{FileChooser, Stage}
-import utilities.{IOManager, Preprocessor}
+import main.utilities.{IOManager, Preprocessor}
 
 class MainPresenter {
   @FXML private var uploadMenuItem: MenuItem = _

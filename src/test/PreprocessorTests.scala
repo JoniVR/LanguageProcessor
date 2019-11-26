@@ -1,7 +1,7 @@
 package test
 
 import org.scalatest._
-import utilities.Preprocessor
+import main.utilities.Preprocessor
 
 class PreprocessorTests extends FunSuite {
 
