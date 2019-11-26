@@ -32,9 +32,9 @@ class Preprocessor {
   }
 
   // TODO: actually log instead of return
-  // TODO: Actually probably needs fixing too.
-  def getPunctuationMarkCount(list: Vector[String]): Long = {
-    val regex = "\\s+(?=\\p{Punct})".r
-    list.filterNot(regex.matches(_)).length
+  def getPunctuationMarkCount(vector: Vector[String]): Long = {
+    val stringToMatch = vector.mkString
+    val regex = "\\p{Punct}"
+    regex.r.findAllIn(stringToMatch).length
   }
 }

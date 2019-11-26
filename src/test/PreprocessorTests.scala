@@ -43,6 +43,8 @@ class PreprocessorTests extends FunSuite {
     val stringToTest =
       Vector("Allemaal !? . , - ( ) lees-tekens',",
         "hopelijk \" werkt het ook ")
-    assert(preprocessor.getPunctuationMarkCount(stringToTest) == 10)
+    val stringToTest2 = Vector(" ", "", "...",". . . ? ")
+    assert(preprocessor.getPunctuationMarkCount(stringToTest) == 11)
+    assert(preprocessor.getPunctuationMarkCount(stringToTest2) == 7)
   }
 }
