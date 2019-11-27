@@ -1,6 +1,9 @@
 package utilities
+import org.apache.log4j.{Level, Logger}
 
 class Preprocessor {
+
+  val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   def removeSpaces(line: String): String = {
     // NOTE: You can ignore red line in IntelliJ, known bug: https://youtrack.jetbrains.com/issue/IDEA-219322
@@ -24,17 +27,27 @@ class Preprocessor {
     line.isBlank
   }
 
-  // TODO: actually log instead of return
-  def getWordCount(vector: Vector[String]): Long = {
-    vector
+  /**
+   * @param vector The lines we read from the file.
+   * @return The number of words. We return a value here for testing purposes.
+   */
+  def logWordCount(vector: Vector[String]): Long = {
+    val wordCount = vector
       .flatMap(_.split("\\W+"))
       .length
+    logger.info("Word Count: " + wordCount)
+    wordCount
   }
 
-  // TODO: actually log instead of return
-  def getPunctuationMarkCount(vector: Vector[String]): Long = {
+  /**
+   * @param vector The lines we read from the file.
+   * @return The number of punctuation marks. We return a value here for testing purposes.
+   */
+  def logPunctuationMarkCount(vector: Vector[String]): Long = {
     val stringToMatch = vector.mkString
     val regex = "\\p{Punct}"
-    regex.r.findAllIn(stringToMatch).length
+    val punctuationCount = regex.r.findAllIn(stringToMatch).length
+    logger.info("Punctuation marks Count: " + punctuationCount)
+    punctuationCount
   }
 }

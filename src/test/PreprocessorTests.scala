@@ -29,12 +29,12 @@ class PreprocessorTests extends FunSuite {
       Vector("Dit is een testzin, met veel nutteloze.. leestekens?",
       "Zodat we word count kunnen testen.",
       "Als we dit niet doen zijn we nooit zeker of de functie effectief werkt!")
-    assert(preprocessor.getWordCount(stringToTest) == 28)
+    assert(preprocessor.logWordCount(stringToTest) == 28)
     val stringToTest2 =
       Vector("Dit zijn nog een paar zinnen..",
       "Kwestie van zeker te zijn?",
       "We zullen ook-tussen de woorden zetten en zelfs- test.")
-    assert(preprocessor.getWordCount(stringToTest2) == 21)
+    assert(preprocessor.logWordCount(stringToTest2) == 21)
   }
 
   // TODO: add more punctuation marks (spanish, french, german, ...) to test
@@ -44,7 +44,7 @@ class PreprocessorTests extends FunSuite {
       Vector("Allemaal !? . , - ( ) lees-tekens',",
         "hopelijk \" werkt het ook ")
     val stringToTest2 = Vector(" ", "", "...",". . . ? ")
-    assert(preprocessor.getPunctuationMarkCount(stringToTest) == 11)
-    assert(preprocessor.getPunctuationMarkCount(stringToTest2) == 7)
+    assert(preprocessor.logPunctuationMarkCount(stringToTest) == 11)
+    assert(preprocessor.logPunctuationMarkCount(stringToTest2) == 7)
   }
 }
