@@ -29,7 +29,7 @@ class Preprocessor {
 
   /**
    * @param vector The lines we read from the file.
-   * @return The number of words. We return a value here for testing purposes.
+   * @return The number of words in the text. We return a value here for testing purposes.
    */
   def logWordCount(vector: Vector[String]): Long = {
     val wordCount = vector
@@ -41,7 +41,7 @@ class Preprocessor {
 
   /**
    * @param vector The lines we read from the file.
-   * @return The number of punctuation marks. We return a value here for testing purposes.
+   * @return The number of punctuation marks in the text. We return a value here for testing purposes.
    */
   def logPunctuationMarkCount(vector: Vector[String]): Long = {
     val stringToMatch = vector.mkString
@@ -49,5 +49,21 @@ class Preprocessor {
     val punctuationCount = regex.r.findAllIn(stringToMatch).length
     logger.info("Punctuation marks Count: " + punctuationCount)
     punctuationCount
+  }
+
+  /**
+   * @param vector The lines we read from the file.
+   * @return The number of uppercase letters in the text. We return a value here for testing purposes.
+   */
+  def logUppercaseCount(vector: Vector[String]): Long = {
+    vector.mkString.count(c => c.isUpper)
+  }
+
+  /**
+   * @param vector The lines we read from the file.
+   * @return The number of lowercase letters in the text. We return a value here for testing purposes.
+   */
+  def logLowercaseCount(vector: Vector[String]): Long = {
+    vector.mkString.count(c => c.isLower)
   }
 }
