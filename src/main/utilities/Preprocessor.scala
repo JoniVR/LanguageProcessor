@@ -56,7 +56,9 @@ class Preprocessor {
    * @return The number of uppercase letters in the text. We return a value here for testing purposes.
    */
   def logUppercaseCount(vector: Vector[String]): Long = {
-    vector.mkString.count(c => c.isUpper)
+    val upperCount = vector.mkString.count(c => c.isUpper)
+    logger.info("Uppercase letter Count: " + upperCount)
+    upperCount
   }
 
   /**
@@ -64,6 +66,8 @@ class Preprocessor {
    * @return The number of lowercase letters in the text. We return a value here for testing purposes.
    */
   def logLowercaseCount(vector: Vector[String]): Long = {
-    vector.mkString.count(c => c.isLower)
+    val lowerCount = vector.mkString.count(c => c.isLower)
+    logger.info("Lowercase letter Count: " + lowerCount)
+    lowerCount
   }
 }
