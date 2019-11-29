@@ -10,6 +10,18 @@ class NgramTests extends FunSuite {
     for (nGram <- nGrams) {
       println(s"${nGram._1.mkString}: ${nGram._2}")
     }
+
+    // TODO: LOL
     assert( 1 == 1)
+  }
+
+  test("testSkipGramCount") {
+    val testData = Vector("the quick brown fox jumps over the lazy dog")
+    val nGramsAnalyser = new NGramsAnalyser
+    val skipGrams = nGramsAnalyser.getNgrams(testData)
+
+    for (nGram <- skipGrams) {
+      println(s"${nGram._1.mkString}: ${nGram._2}")
+    }
   }
 }
