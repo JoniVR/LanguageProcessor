@@ -7,7 +7,7 @@ class Preprocessor {
 
   def doLogging(vector: Vector[String], fileName: String): Unit = {
     logger.info("--------- START RUN ---------")
-    logger.info(s"Filename: $fileName")
+    logger.info(s"Filename: '$fileName'")
     logWordCount(vector)
     logPunctuationMarkCount(vector)
     logUppercaseCount(vector)
