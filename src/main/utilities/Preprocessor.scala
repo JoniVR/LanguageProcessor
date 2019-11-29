@@ -1,5 +1,5 @@
 package utilities
-import org.apache.log4j.{Level, Logger}
+import org.apache.log4j.Logger
 
 class Preprocessor {
 
@@ -37,6 +37,13 @@ class Preprocessor {
       .length
     logger.info("Word Count: " + wordCount)
     wordCount
+  }
+
+  def doLogging(vector: Vector[String]) {
+    logWordCount(vector)
+    logPunctuationMarkCount(vector)
+    logUppercaseCount(vector)
+    logLowercaseCount(vector)
   }
 
   /**

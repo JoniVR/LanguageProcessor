@@ -48,7 +48,6 @@ class MainPresenter {
       vector.view.filter(!preprocessor.findSpaceLines(_))
         .map(preprocessor.removeSpaces)
         .to(Vector)
-    preprocessor.logWordCount(processedList)
-    preprocessor.logPunctuationMarkCount(processedList)
+    preprocessor.doLogging(processedList)
   }
 }

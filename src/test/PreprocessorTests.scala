@@ -1,10 +1,13 @@
-package test
-
 import org.apache.log4j.helpers.LogLog
 import org.scalatest._
 import utilities.Preprocessor
 
-class PreprocessorTests extends FunSuite {
+class PreprocessorTests extends FunSuite with BeforeAndAfter {
+
+  before {
+    // disable logging during testing
+    LogLog.setQuietMode(true)
+  }
 
   test("testRemoveSpaces"){
     val preprocessor = new Preprocessor()
@@ -25,7 +28,6 @@ class PreprocessorTests extends FunSuite {
   }
 
   test("logWordCount") {
-    LogLog.setQuietMode(true)
     val preprocessor = new Preprocessor()
     val stringToTest = Vector("Dit is een testzin, met veel nutteloze.. leestekens?",
       "Zodat we word count kunnen testen.",
@@ -42,7 +44,6 @@ class PreprocessorTests extends FunSuite {
 
   // TODO: add more punctuation marks (spanish, french, german, ...) to test
   test("logPunctuationMarkCount") {
-    LogLog.setQuietMode(true)
     val preprocessor = new Preprocessor()
     val stringToTest =
       Vector("Allemaal !? . , - ( ) lees-tekens',",
@@ -53,7 +54,6 @@ class PreprocessorTests extends FunSuite {
   }
 
   test("logUppercaseCount") {
-    LogLog.setQuietMode(true)
     val preprocessor = new Preprocessor()
     val stringToTest = Vector(
       "Dit is EEN RaRe Zin OM capitals te testen. sOmS iS DaT NOdIg...",
@@ -65,7 +65,6 @@ class PreprocessorTests extends FunSuite {
   }
 
   test("logLowercaseCount") {
-    LogLog.setQuietMode(true)
     val preprocessor = new Preprocessor()
     val stringToTest = Vector(
       "Dit is een testZin",
