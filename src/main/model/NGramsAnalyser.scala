@@ -7,9 +7,15 @@ class NGramsAnalyser {
     if (n <= 1) throw NGramNotPossibleException(s"The n-value $n is not possible.")
 
     vector.mkString
-      .replaceAll(" ", "").toLowerCase.toCharArray
-      .sliding(n).toSeq
+      .toLowerCase
+      .split(" ")
+      .map(_.toCharArray)
+      .flatMap(_
+        .sliding(n)
+        .toList
+        .map(_.mkString)
+      )
       .groupBy(identity)
-    //.transform((k, v) => v.size)
+      .transform((k, v) => v.size)
   }
 }
