@@ -1,8 +1,11 @@
 package presenter
 
 import javafx.fxml.FXML
-import javafx.scene.control.MenuItem
+import javafx.scene.control.Alert.AlertType
+import javafx.scene.control.{Alert, ButtonType, MenuItem}
+import javafx.scene.layout.Region
 import javafx.stage.{FileChooser, Stage}
+import org.apache.log4j.Logger
 import utilities.{IOManager, Preprocessor}
 
 class MainPresenter {
@@ -11,6 +14,7 @@ class MainPresenter {
   @FXML private var aboutMenuItem: MenuItem = _
 
   private val preprocessor = new Preprocessor()
+  private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   @FXML
   def uploadMenuClicked(): Unit = {
@@ -18,16 +22,19 @@ class MainPresenter {
     val fileChooser = new FileChooser
     try {
       val files = fileChooser.showOpenMultipleDialog(new Stage())
-      files.forEach(f => {
-        val fileVector = ioManager.readFile(f.getPath)
-        preProcessFile(fileVector)
-      })
+      if (files != null) {
+        files.forEach(f => {
+          val fileVector = ioManager.readFile(f.getPath)
+          preProcessFile(fileVector)
+        })
+      }
     }
     catch {
       case ex: Exception =>
-        // TODO: Show error UI for different exceptions and log it
-        // NOTE: "cancel" klikken geeft ook een exception!
-        ex.printStackTrace()
+        val alert = new Alert(AlertType.ERROR, "Error trying to load file!", ButtonType.OK)
+        alert.getDialogPane.setMinHeight(Region.USE_PREF_SIZE)
+        alert.show()
+        logger.error(ex)
     }
   }
 

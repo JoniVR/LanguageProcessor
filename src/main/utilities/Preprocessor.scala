@@ -3,7 +3,7 @@ import org.apache.log4j.Logger
 
 class Preprocessor {
 
-  val logger: Logger = Logger.getLogger(this.getClass.getName)
+  private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   def removeSpaces(line: String): String = {
     // NOTE: You can ignore red line in IntelliJ, known bug: https://youtrack.jetbrains.com/issue/IDEA-219322
