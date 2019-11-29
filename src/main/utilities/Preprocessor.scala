@@ -5,6 +5,16 @@ class Preprocessor {
 
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
+  def doLogging(vector: Vector[String], fileName: String): Unit = {
+    logger.info("--------- START RUN ---------")
+    logger.info(s"Filename: $fileName")
+    logWordCount(vector)
+    logPunctuationMarkCount(vector)
+    logUppercaseCount(vector)
+    logLowercaseCount(vector)
+    logger.info("--------- END RUN ---------")
+  }
+
   def removeSpaces(line: String): String = {
     // NOTE: You can ignore red line in IntelliJ, known bug: https://youtrack.jetbrains.com/issue/IDEA-219322
     // regex makes use of Positive lookahead
@@ -35,15 +45,8 @@ class Preprocessor {
     val wordCount = vector
       .flatMap(_.split("\\W+"))
       .length
-    logger.info("Word Count: " + wordCount)
+    logger.info(s"Word Count: $wordCount")
     wordCount
-  }
-
-  def doLogging(vector: Vector[String]) {
-    logWordCount(vector)
-    logPunctuationMarkCount(vector)
-    logUppercaseCount(vector)
-    logLowercaseCount(vector)
   }
 
   /**
@@ -54,7 +57,7 @@ class Preprocessor {
     val stringToMatch = vector.mkString
     val regex = "\\p{Punct}"
     val punctuationCount = regex.r.findAllIn(stringToMatch).length
-    logger.info("Punctuation marks Count: " + punctuationCount)
+    logger.info(s"Punctuation marks Count: $punctuationCount")
     punctuationCount
   }
 
@@ -64,7 +67,7 @@ class Preprocessor {
    */
   def logUppercaseCount(vector: Vector[String]): Long = {
     val upperCount = vector.mkString.count(c => c.isUpper)
-    logger.info("Uppercase letter Count: " + upperCount)
+    logger.info(s"Uppercase letter Count: $upperCount")
     upperCount
   }
 
@@ -74,7 +77,7 @@ class Preprocessor {
    */
   def logLowercaseCount(vector: Vector[String]): Long = {
     val lowerCount = vector.mkString.count(c => c.isLower)
-    logger.info("Lowercase letter Count: " + lowerCount)
+    logger.info(s"Lowercase letter Count: $lowerCount")
     lowerCount
   }
 }

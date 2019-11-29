@@ -25,7 +25,7 @@ class MainPresenter {
       if (files != null) {
         files.forEach(f => {
           val fileVector = ioManager.readFile(f.getPath)
-          preProcessFile(fileVector)
+          preProcessFile(fileVector, f.getName)
         })
       }
     }
@@ -48,13 +48,13 @@ class MainPresenter {
     println("about clicked")
   }
 
-  private def preProcessFile(vector: Vector[String]): Unit = {
+  private def preProcessFile(vector: Vector[String], filename: String): Unit = {
     // using view on a vector is a lot more memory efficient compared to using a list and stream
     // see: https://docs.scala-lang.org/tutorials/FAQ/stream-view-iterator.html
     val processedList =
       vector.view.filter(!preprocessor.findSpaceLines(_))
         .map(preprocessor.removeSpaces)
         .to(Vector)
-    preprocessor.doLogging(processedList)
+    preprocessor.doLogging(processedList, filename)
   }
 }
