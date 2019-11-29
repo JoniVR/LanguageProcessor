@@ -8,26 +8,22 @@ class NGramsAnalyser {
     if (n <= 1) throw NGramNotPossibleException(s"The n-value $n is not possible.")
 
     vector.mkString
-      .toLowerCase
-      .split(" ")
+      .toLowerCase.split(" ")
       .map(_.toCharArray)
       .flatMap(_
-        .sliding(n)
-        .toList
+        .sliding(n).toList
         .map(_.mkString)
       )
       .groupBy(identity)
       .transform((k, v) => v.size)
   }
 
-  def getSkipGrams(vector: Vector[String]): Unit = {
+  def getSkipGrams(vector: Vector[String]): Map[String, Int] = {
     vector.mkString
-      .toLowerCase
-      .split(" ")
+      .toLowerCase.split(" ")
       .map(_.toCharArray)
       .flatMap(_
-        .sliding(3)
-        .toList
+        .sliding(3).toList
         .map(_.mkString)
         .map(_.updated(1, '_'))
       )

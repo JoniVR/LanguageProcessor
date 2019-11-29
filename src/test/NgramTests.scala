@@ -4,24 +4,24 @@ import org.scalatest._
 class NgramTests extends FunSuite {
 
   test("testNgramCount") {
-    val testData = Vector("the quick brown fox jumps over the lazy dog")
     val nGramsAnalyser = new NGramsAnalyser
-    val nGrams = nGramsAnalyser.getNgrams(testData, 2)
-    for (nGram <- nGrams) {
-      println(s"${nGram._1.mkString}: ${nGram._2}")
-    }
-
-    // TODO: LOL
-    assert( 1 == 1)
+    val testData = Vector("tHe ApPlE fElL fRoM tHe TrEe")
+    val expectedResult: Map[String, Int] = Map(
+      "th" -> 2, "he" -> 2, "ap" -> 1, "pp" -> 1, "pl" -> 1, "le" -> 1, "fe" -> 1, "el" -> 1, "ll" -> 1, "fr" -> 1, "ro" -> 1, "om" -> 1, "tr" -> 1, "re" -> 1, "ee" -> 1,
+    )
+    val result = nGramsAnalyser getNgrams(testData, 2)
+    assert(result equals expectedResult)
+    //result foreach(r => println(s"${r._1.mkString}: ${r._2}"))
   }
 
   test("testSkipGramCount") {
-    val testData = Vector("the quick brown fox jumps over the lazy dog")
     val nGramsAnalyser = new NGramsAnalyser
-    val skipGrams = nGramsAnalyser.getNgrams(testData)
-
-    for (nGram <- skipGrams) {
-      println(s"${nGram._1.mkString}: ${nGram._2}")
-    }
+    val testData = Vector("tHe ApPlE fElL fRoM tHe TrEe")
+    val expectedResult: Map[String, Int] = Map(
+      "t_e" -> 3, "a_p" -> 1, "p_l" -> 1, "p_e" -> 1, "f_l" -> 1, "e_l" -> 1, "f_o" -> 1, "r_m" -> 1, "r_e" -> 1
+    )
+    val result = nGramsAnalyser.getSkipGrams(testData)
+    assert(result equals expectedResult)
+    //result foreach (r => println(s"${r._1.mkString}: ${r._2}"))
   }
 }
