@@ -43,6 +43,7 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
   }
 
   // TODO: add more punctuation marks (spanish, french, german, ...) to test
+  //  ¿ ¡
   test("logPunctuationMarkCount") {
     val preprocessor = new Preprocessor()
     val stringToTest =
