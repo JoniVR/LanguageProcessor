@@ -4,7 +4,7 @@ import utilities.Processor
 
 class ProcessorTests extends FunSuite with BeforeAndAfter {
 
-  test("getStartsOrEndsWithEachLetterOfAlphabetPercentage") {
+  test("calculateStartsOrEndsWithEachLetterOfAlphabetPercentage") {
     val processor = new Processor()
     val testStringDutch = Vector(
       "Dit is Een test",
@@ -14,7 +14,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "Ik heb echt geen inspiratie meer nu",
       "hopelijk is het genoeg nu. 123 nieuwe test. xenofobie"
     ) // 50 words
-    val resultMapStartsWith = processor.getStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = true).get
+    val resultMapStartsWith = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = true).get
     // all these percentages have been checked manually
     // 18% starts with i
     assert(resultMapStartsWith('i') == 18.0)
@@ -23,7 +23,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     // 8% starts with m
     assert(resultMapStartsWith('m') == 8.0)
 
-    val resultMapEndsWith = processor.getStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = false).get
+    val resultMapEndsWith = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = false).get
     // 0% ends with i
     assert(resultMapEndsWith('i') == 0.0)
     // 10% starts with x

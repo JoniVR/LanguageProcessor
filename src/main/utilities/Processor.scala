@@ -18,7 +18,7 @@ class Processor {
    *         and as value the occurrence percentage where that specific letter is the first (or last) letter of a word.
    *         If the language specified is not found an empty optional (Option.empty) will be returned.
    */
-  def getStartsOrEndsWithEachLetterOfAlphabetPercentage(language: Languages.Value, vector: Vector[String], isStartsWith: Boolean): Option[Map[Char, Double]] = {
+  def calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(language: Languages.Value, vector: Vector[String], isStartsWith: Boolean): Option[Map[Char, Double]] = {
     val alphabet = Alphabets.alphabets.get(language)
     if (alphabet.isEmpty) return Option.empty
     val splitByWords = vector.flatMap(_.split("\\W+"))
