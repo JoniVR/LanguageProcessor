@@ -4,23 +4,31 @@ import utilities.Processor
 
 class ProcessorTests extends FunSuite with BeforeAndAfter {
 
-  test("getStartsWithEachLetterOfAlphabetPercentage") {
+  test("getStartsOrEndsWithEachLetterOfAlphabetPercentage") {
     val processor = new Processor()
     val testStringDutch = Vector(
       "Dit is Een test",
-      "Ik heb geen idee wat ik voor deze test moet verzinnen..",
+      "Ik heb geen idee wat ik voor deze tesT moet verzinnen..",
       "Dus Typ ik maar gewoon wat er nu in Me opkomt.",
       "De afwisselende hoofdletters Zijn onderdeel van de TEST.",
       "Ik heb echt geen inspiratie meer nu",
       "hopelijk is het genoeg nu. 123 nieuwe test. xenofobie"
     ) // 50 words
-    val resultMap = processor.getStartsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch).get
+    val resultMapStartsWith = processor.getStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = true).get
     // all these percentages have been checked manually
     // 18% starts with i
-    assert(resultMap('i') == 18.0)
+    assert(resultMapStartsWith('i') == 18.0)
     // 2% starts with x
-    assert(resultMap('x') == 2.0)
+    assert(resultMapStartsWith('x') == 2.0)
     // 8% starts with m
-    assert(resultMap('m') == 8.0)
+    assert(resultMapStartsWith('m') == 8.0)
+
+    val resultMapEndsWith = processor.getStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = false).get
+    // 0% ends with i
+    assert(resultMapEndsWith('i') == 0.0)
+    // 10% starts with x
+    assert(resultMapEndsWith('k') == 10.0)
+    // 22% starts with m
+    assert(resultMapEndsWith('t') == 22.0)
   }
 }
