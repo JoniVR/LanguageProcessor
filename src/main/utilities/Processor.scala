@@ -32,6 +32,15 @@ class Processor {
     resultMap
   }
 
+  /**
+   * Calculates the frequency (as a percentage) that every letter from the specified alphabet is present in the vector relative to the total amount of characters.
+   * Does not count letters that are not part of the specified alphabet.
+   *
+   * @param language The language the vector will be in. This is important because different languages have different alphabets.
+   * @param vector A vector where each value equals a line read from the text.
+   * @return A map A map with as key the letter of the alphabet for the specific language
+   *         and as value the occurrence percentage relative to the total amount of characters of that language.
+   */
   def calculateAlphabetLetterFrequencyPercentage(language: Languages.Value, vector: Vector[String]): Map[Char, Double] = {
     val alphabet = Alphabets.alphabets(language)
     val text = vector.mkString.toLowerCase
