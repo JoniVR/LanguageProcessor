@@ -1,7 +1,6 @@
 package model
 
 object Alphabets {
-
   val alphabets: Map[Languages.Value, String] = Map(
     Languages.Danish -> "abcdefghijklmnopqrstuvwxyzæåø",
     Languages.Finnish -> "abcdefghijklmnopqrstuvwxyzäö",
