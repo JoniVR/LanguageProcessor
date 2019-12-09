@@ -9,7 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="scala-sdk-2.13.1" type="Scala">
@@ -62,7 +62,5 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="org.openjfx:javafx-controls:11" level="application" />
-    <orderEntry type="library" name="org.openjfx:javafx-fxml:11.0.1" level="application" />
   </component>
 </module>
