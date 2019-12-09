@@ -34,7 +34,7 @@ class Preprocessor {
   }
 
   def findSpaceLines(line: String): Boolean = {
-    line.isBlank
+    line.trim.isEmpty
   }
 
   /**
