@@ -27,7 +27,7 @@ class Processor {
         if (isStartsWith) word.toLowerCase.startsWith(letter.toString)
         else word.toLowerCase.endsWith(letter.toString)
       })
-      count/totalWordCount * 100
+      count/totalWordCount
     })).toMap
     resultMap
   }
@@ -35,10 +35,9 @@ class Processor {
   /**
    * Calculates the frequency (as a percentage) that every letter from the specified alphabet is present in the vector relative to the total amount of characters.
    * Does not count letters that are not part of the specified alphabet.
-   *
    * @param language The language the vector will be in. This is important because different languages have different alphabets.
    * @param vector A vector where each value equals a line read from the text.
-   * @return A map A map with as key the letter of the alphabet for the specific language
+   * @return A map with as key the letter of the alphabet for the specific language
    *         and as value the occurrence percentage relative to the total amount of characters of that language.
    */
   def calculateAlphabetLetterFrequencyPercentage(language: Languages.Value, vector: Vector[String]): Map[Char, Double] = {
@@ -48,8 +47,24 @@ class Processor {
     val totalLetterCount: Double = text.filter(char => alphabet.contains(char)).length
     val resultMap: Map[Char, Double] = alphabet.map(letter => (letter, {
       val count = text.count(_ == letter)
-      count/totalLetterCount * 100
+      count/totalLetterCount
     })).toMap
     resultMap
+  }
+
+  /**
+   * Calculates the frequency (as a percentage) of vowels and consonants in a text of a specified language.
+   * Note that only valid letters of said alphabet will be counted.
+   * @param language The language the vector will be in. This is important because different languages have different alphabets.
+   * @param vector A vector where each value equals a line read from the text.
+   * @return A map with as key a string indicating what is being returned and as value the frequency percentage (vowel vs consonants).
+   */
+  def calculateVowelsAndConsonantsFrequencyPercentage(language: Languages.Value, vector: Vector[String]): Map[String, Double] = {
+    val text = vector.mkString.toLowerCase
+    val validCharsOnly = text.replaceAll(s"[^${Alphabets.alphabets(language)}]", "")
+    val totalValidCharCount: Double = validCharsOnly.length
+    val vowelCount: Double = validCharsOnly.replaceAll(s"[^${Alphabets.vowels(language)}]","").length
+    val consonantCount: Double = totalValidCharCount - vowelCount
+    Map("vowels" -> vowelCount/totalValidCharCount, "consonants" -> consonantCount/totalValidCharCount)
   }
 }
