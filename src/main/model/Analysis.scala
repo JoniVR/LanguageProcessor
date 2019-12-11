@@ -1,8 +1,8 @@
-package Dto
+package model
 
-object AnalysisDto {
-  def getTestDto: AnalysisDto = {
-    AnalysisDto("TestAnalysis",
+object Analysis {
+  def getTest: Analysis = {
+    Analysis("TestAnalysis",
       "English",
       Map("A" -> 1, "B" -> 2),
       Map("C" -> 1, "D" -> 2),
@@ -19,7 +19,7 @@ object AnalysisDto {
   }
 }
 
-case class AnalysisDto
+case class Analysis
 (
   name: String,
   language: String,

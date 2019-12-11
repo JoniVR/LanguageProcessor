@@ -1,64 +1,76 @@
 package utilities
 
-import Dto.AnalysisDto
-import spray.json.{DefaultJsonProtocol, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+import model.Analysis
+import spray.json._
 
-
+/**
+ * Object that describes the serialization and deserialization of an analysis.
+ */
 object AnalysisJsonProtocol extends DefaultJsonProtocol {
 
-  /*
-  private def transformFreqMapToJsObject(map: Map[String, AnyVal]): JsObject = map match {
-    case map: Map[String, Double] => JsObject(
-      map.transform((k, v) => JsNumber(v))
-    )
-    case map: Map[String, Int] => JsObject(
-      map.transform((k, v) => JsNumber(v))
-    )
-    case _ => throw new IllegalArgumentException("Map values need to be either of type Int or Double.")
-  }
-  */
-
-  /**
-   * Transforms a Map[String, Double] to JsObject.
-   * @param map is a map of string-keys and double-values.
-   * @return JsObject representation of the given map.
-   */
   private def transformDoubleMapToJsObject(map: Map[String, Double]): JsObject =
-    JsObject( map.transform((k, v) => JsNumber(v)) )
+    JsObject(map.transform((k, v) => JsNumber(v)))
+
+  private def transformIntMapToJsObject(map: Map[String, Int]): JsObject =
+    JsObject(map.transform((k, v) => JsNumber(v)))
 
   /**
-   * Transforms a Map[String, Int] to JsObject
-   * @param map is a map of string-keys and Int-values.
-   * @return JsObject representation of the given map.
+   * Object that does the reading from and writing to Json.
+   * @note This object is made implicit so that we can use the .toJson method on an AnalysisDto without
+   * needing to specify the correct format, as long as this object is imported in the utilizing class.
    */
-  private def transformIntMapToJsObject(map: Map[String, Int]): JsObject =
-    JsObject( map.transform((k, v) => JsNumber(v)) )
+  implicit object AnalysisJsonFormat extends RootJsonFormat[Analysis] {
 
-  implicit object AnalysisJsonFormat extends RootJsonFormat[AnalysisDto] {
-
-    //TODO: deserialization of json string
-    override def read(json: JsValue): AnalysisDto = ??? //json match {
-    //case JsArray(Vector(JsString(name), JsString(language), )) =>
-    //  new AnalysisDto(name, language);
-    //case _ => DeserializationException("Something went wrong while reading the analysis Json string.")
-    //}
-
-    override def write(analysis: AnalysisDto): JsValue = JsObject(
-      Map[String, JsValue](
-        "name" -> JsString(analysis.name),
-        "language" -> JsString(analysis.language),
-        "numberOfWordsStartingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsStartingWithLetter),
-        "numberOfWordsEndingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsEndingWithLetter),
-        "frequencyOfLetter" -> transformDoubleMapToJsObject(analysis.frequencyOfLetters),
-        "consonantsPercentage" -> JsNumber(analysis.consonantsPercentage),
-        "vowelsPercentage" -> JsNumber(analysis.vowelsPercentage),
-        "mostFrequentBiGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentBiGrams),
-        "mostFrequentTriGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentTriGrams),
-        "mostFrequentSkipGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentSkipGrams),
-        "mostFrequentBiGramsStartOfWord" -> transformIntMapToJsObject(analysis.mostFrequentBiGramsStartOfWord),
-        "mostFrequentBiGramsEndOfWord" -> transformIntMapToJsObject(analysis.mostFrequentBiGramsEndOfWord),
-        "mostFrequentSkipGramsMatchingBiGramFrequency" -> transformDoubleMapToJsObject(analysis.mostFrequentSkipGramsMatchingBiGramFrequency),
+    override def read(json: JsValue): Analysis = {
+      val fields = json.asJsObject("Analysis expected.").fields
+      new Analysis(
+        name =
+          fields("name").convertTo[String],
+        language =
+          fields("language").convertTo[String],
+        numberOfWordsStartingWithLetter =
+          fields("numberOfWordsStartingWithLetter").convertTo[Map[String, Int]],
+        numberOfWordsEndingWithLetter =
+          fields("numberOfWordsEndingWithLetter").convertTo[Map[String, Int]],
+        frequencyOfLetters =
+          fields("frequencyOfLetters").convertTo[Map[String, Double]],
+        consonantsPercentage =
+          fields("consonantsPercentage").convertTo[Int],
+        vowelsPercentage =
+          fields("vowelsPercentage").convertTo[Int],
+        mostFrequentBiGrams =
+          fields("mostFrequentBiGrams").convertTo[Map[String, Double]],
+        mostFrequentTriGrams =
+          fields("mostFrequentTriGrams").convertTo[Map[String, Double]],
+        mostFrequentSkipGrams =
+          fields("mostFrequentSkipGrams").convertTo[Map[String, Double]],
+        mostFrequentBiGramsStartOfWord =
+          fields("mostFrequentBiGramsStartOfWord").convertTo[Map[String, Int]],
+        mostFrequentBiGramsEndOfWord =
+          fields("mostFrequentBiGramsEndOfWord").convertTo[Map[String, Int]],
+        mostFrequentSkipGramsMatchingBiGramFrequency =
+          fields("mostFrequentSkipGramsMatchingBiGramFrequency").convertTo[Map[String, Double]]
       )
-    )
+    }
+
+    override def write(analysis: Analysis): JsValue =
+      JsObject(
+        Map[String, JsValue](
+          "name" -> JsString(analysis.name),
+          "language" -> JsString(analysis.language),
+          "numberOfWordsStartingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsStartingWithLetter),
+          "numberOfWordsEndingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsEndingWithLetter),
+          "frequencyOfLetter" -> transformDoubleMapToJsObject(analysis.frequencyOfLetters),
+          "consonantsPercentage" -> JsNumber(analysis.consonantsPercentage),
+          "vowelsPercentage" -> JsNumber(analysis.vowelsPercentage),
+          "mostFrequentBiGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentBiGrams),
+          "mostFrequentTriGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentTriGrams),
+          "mostFrequentSkipGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentSkipGrams),
+          "mostFrequentBiGramsStartOfWord" -> transformIntMapToJsObject(analysis.mostFrequentBiGramsStartOfWord),
+          "mostFrequentBiGramsEndOfWord" -> transformIntMapToJsObject(analysis.mostFrequentBiGramsEndOfWord),
+          "mostFrequentSkipGramsMatchingBiGramFrequency" -> transformDoubleMapToJsObject(analysis.mostFrequentSkipGramsMatchingBiGramFrequency),
+        )
+      )
   }
+
 }
