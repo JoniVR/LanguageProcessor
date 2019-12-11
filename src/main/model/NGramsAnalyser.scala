@@ -1,11 +1,11 @@
 package model
 
-import exception.NGramNotPossibleException
+import exception.NGramImpossibleException
 
 class NGramsAnalyser {
 
   def getNgrams(vector: Vector[String], n: Int = 2): Map[String, Int] = {
-    if (n <= 1) throw NGramNotPossibleException(s"The n-value $n is not possible.")
+    if (n <= 1) throw NGramImpossibleException(s"An ngram with an n-value of $n is not possible.")
 
     vector.mkString
       .toLowerCase.split(" ")

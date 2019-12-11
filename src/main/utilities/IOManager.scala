@@ -1,5 +1,10 @@
 package utilities
 
+import spray.json._
+import Dto.AnalysisDto
+import utilities.AnalysisJsonProtocol._
+
+
 class IOManager
 {
   @throws(classOf[Exception])
@@ -16,4 +21,14 @@ class IOManager
       bufferedSource.close
     }
   }
+
+  def writeAnalysisDto(filePath: String, analysis: AnalysisDto): Unit = {
+    val dtoString = analysis.toJson
+    println(dtoString.prettyPrint)
+  }
+
+  def readAnalysisDto(filePath: String): AnalysisDto = {
+    AnalysisDto.getTestDto
+  }
+
 }
