@@ -23,7 +23,7 @@ object AnalysisJsonProtocol extends DefaultJsonProtocol {
 
     override def read(json: JsValue): Analysis = {
       val fields = json.asJsObject("Analysis expected.").fields
-      new Analysis(
+      Analysis(
         name =
           fields("name").convertTo[String],
         language =
