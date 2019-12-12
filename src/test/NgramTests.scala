@@ -11,7 +11,6 @@ class NgramTests extends FunSuite {
     )
     val result = nGramsAnalyser getNgrams(testData, 2)
     assert(result equals expectedResult)
-    //result foreach(r => println(s"${r._1.mkString}: ${r._2}"))
   }
 
   test("testSkipGramCount") {
@@ -22,6 +21,5 @@ class NgramTests extends FunSuite {
     )
     val result = nGramsAnalyser.getSkipGrams(testData)
     assert(result equals expectedResult)
-    //result foreach (r => println(s"${r._1.mkString}: ${r._2}"))
   }
 }

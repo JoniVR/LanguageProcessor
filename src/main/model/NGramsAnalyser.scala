@@ -15,7 +15,7 @@ class NGramsAnalyser {
         .map(_.mkString)
       )
       .groupBy(identity)
-      .transform((k, v) => v.size)
+      .transform((k, v) => v.length)
   }
 
   def getSkipGrams(vector: Vector[String]): Map[String, Int] = {
@@ -28,6 +28,6 @@ class NGramsAnalyser {
         .map(_.updated(1, '_'))
       )
       .groupBy(identity)
-      .transform((k, v) => v.size)
+      .transform((k, v) => v.length)
   }
 }
