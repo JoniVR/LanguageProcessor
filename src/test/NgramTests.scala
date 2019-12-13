@@ -5,21 +5,38 @@ class NgramTests extends FunSuite {
 
   test("testNgramCount") {
     val nGramsAnalyser = new NGramsAnalyser
-    val testData = Vector("tHe ApPlE fElL fRoM tHe TrEe")
-    val expectedResult: Map[String, Int] = Map(
-      "th" -> 2, "he" -> 2, "ap" -> 1, "pp" -> 1, "pl" -> 1, "le" -> 1, "fe" -> 1, "el" -> 1, "ll" -> 1, "fr" -> 1, "ro" -> 1, "om" -> 1, "tr" -> 1, "re" -> 1, "ee" -> 1,
+    val testData = Vector(
+      "the apple fell from the tree",
+      "Another sentence to test and play with",
+      "I need some inspiration for this test",
+      "Please work"
     )
-    val result = nGramsAnalyser getNgrams(testData, 2)
+    val expectedResult: Map[String, Int] = Map(
+      "th" -> 5, "he" -> 3, "te" -> 3, "pl" -> 3, "or" -> 2, "ea" -> 2,
+      "se" -> 2, "le" -> 2, "st" -> 2, "om" -> 2, "en" -> 2, "es" -> 2,
+      "hi" -> 2, "an" -> 2, "ee" -> 2, "is" -> 1, "fe" -> 1, "ns" -> 1,
+      "la" -> 1, "to" -> 1, "pp" -> 1, "ir" -> 1, "nc" -> 1, "wi" -> 1, "in" -> 1
+    )
+    val result = nGramsAnalyser getNgrams(testData, 2, 25)
     assert(result equals expectedResult)
   }
 
   test("testSkipGramCount") {
     val nGramsAnalyser = new NGramsAnalyser
-    val testData = Vector("tHe ApPlE fElL fRoM tHe TrEe")
-    val expectedResult: Map[String, Int] = Map(
-      "t_e" -> 3, "a_p" -> 1, "p_l" -> 1, "p_e" -> 1, "f_l" -> 1, "e_l" -> 1, "f_o" -> 1, "r_m" -> 1, "r_e" -> 1
+    val testData = Vector(
+      "the apple fell from the tree",
+      "Another sentence to test and play with",
+      "I need some inspiration for this test",
+      "Please work"
     )
-    val result = nGramsAnalyser.getSkipGrams(testData)
+    val expectedResult: Map[String, Int] = Map(
+      "t_e" -> 4, "n_e" -> 3, "e_t" -> 3, "p_e" -> 2, "t_i" -> 2,
+      "t_s" -> 2, "r_t" -> 1, "s_p" -> 1, "f_l" -> 1, "r_m" -> 1,
+      "a_e" -> 1, "a_o" -> 1, "r_e" -> 1, "r_e" -> 1, "e_n" -> 1,
+      "e_s" -> 1, "a_i" -> 1, "i_h" -> 1, "w_r" -> 1, "h_s" -> 1,
+      "e_d" -> 1, "a_d" -> 1, "s_m" -> 1, "n_t" -> 1, "e_c" -> 1, "t_n" -> 1
+    )
+    val result = nGramsAnalyser.getSkipGrams(testData,25)
     assert(result equals expectedResult)
   }
 }

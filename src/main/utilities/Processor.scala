@@ -12,6 +12,7 @@ class Processor {
    */
   def processText(vector: Vector[String], language: Languages.Value): Unit = {
     val filteredVector = filterNonAlphabetCharacters(vector, language)
+    
   }
 
   /**
