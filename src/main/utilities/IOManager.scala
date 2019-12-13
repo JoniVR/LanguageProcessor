@@ -48,8 +48,8 @@ class IOManager {
    * @return analysis object with values found in the given file.
    */
   def readAnalysis(filePath: String): Analysis = {
-    val analysisString = readFile(filePath).mkString
-    analysisString
+    readFile(filePath)
+      .mkString
       .parseJson
       .convertTo[Analysis]
   }

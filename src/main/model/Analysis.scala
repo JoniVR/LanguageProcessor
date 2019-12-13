@@ -1,7 +1,7 @@
 package model
 
 object Analysis {
-  def getTest: Analysis = {
+  def getDummy: Analysis = {
     Analysis("TestAnalysis",
       "English",
       Map("A" -> 1, "B" -> 2),
