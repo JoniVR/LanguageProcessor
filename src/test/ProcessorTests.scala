@@ -25,13 +25,11 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "hopelijk is het genoeg nu  test xenofobie "
     )
 
-    val processor = new Processor()
-    val result = processor.filterNonAlphabetCharacters(testStringDutch, Languages.Dutch)
+    val result = Processor.filterNonAlphabetCharacters(testStringDutch, Languages.Dutch)
     assert(result == expectedStringDutch)
   }
 
   test("calculateStartsOrEndsWithEachLetterOfAlphabetPercentage") {
-    val processor = new Processor()
     val testStringDutch = Vector(
       "dit is een test",
       "ik heb geen idee wat ik voor deze test moet verzinnen",
@@ -40,7 +38,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echt geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 50 words
-    val resultMapStartsWith = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = true)
+    val resultMapStartsWith = Processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = true)
     // all these percentages have been checked manually
     // 18% starts with i
     assert(resultMapStartsWith('i') == 0.18)
@@ -49,7 +47,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     // 8% starts with m
     assert(resultMapStartsWith('m') == 0.08)
 
-    val resultMapEndsWith = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = false)
+    val resultMapEndsWith = Processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = false)
     // 0% ends with i
     assert(resultMapEndsWith('i') == 0.0)
     // 10% starts with x
@@ -59,12 +57,11 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
 
     val testEmptyString = Vector("")
 
-    val resultEmptyString = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testEmptyString, isStartsWith = true)
+    val resultEmptyString = Processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testEmptyString, isStartsWith = true)
     assert(resultEmptyString('a') == 0)
   }
 
   test("calculateAlphabetLetterFrequencyPercentage") {
-    val processor = new Processor()
     val testStringDutch = Vector(
       "dit is een test",
       "nog een lijn om te testen ertussen test test",
@@ -74,7 +71,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters
-    val resultMap = processor.calculateAlphabetLetterFrequencyPercentage(Languages.Dutch, testStringDutch)
+    val resultMap = Processor.calculateAlphabetLetterFrequencyPercentage(Languages.Dutch, testStringDutch)
     // 19/250, 7.6% of the text should be the letter 'i'
     assert(resultMap('i') == 0.076)
     // 10/200, 4% of the text should be the letter 'd'
@@ -91,8 +88,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters
-    val processor = new Processor()
-    val resultMap = processor.calculateVowelsAndConsonantsFrequencyPercentage(Languages.Dutch, testStringDutch)
+    val resultMap = Processor.calculateVowelsAndConsonantsFrequencyPercentage(Languages.Dutch, testStringDutch)
     // 104/250 - vowels -> 0,416
     assert(resultMap("vowels") == 0.416)
     // 146/250 - consonants -> 0,584

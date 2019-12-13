@@ -4,7 +4,6 @@ import org.scalatest._
 class NgramTests extends FunSuite {
 
   test("testNgramCount") {
-    val nGramsAnalyser = new NGramsAnalyser
     val testData = Vector(
       "the apple fell from the tree",
       "Another sentence to test and play with",
@@ -17,12 +16,11 @@ class NgramTests extends FunSuite {
       "hi" -> 2, "an" -> 2, "ee" -> 2, "is" -> 1, "fe" -> 1, "ns" -> 1,
       "la" -> 1, "to" -> 1, "pp" -> 1, "ir" -> 1, "nc" -> 1, "wi" -> 1, "in" -> 1
     )
-    val result = nGramsAnalyser getNgrams(testData, 2, 25)
+    val result = NGramsAnalyser getNgrams(testData, 2, 25)
     assert(result equals expectedResult)
   }
 
   test("testSkipGramCount") {
-    val nGramsAnalyser = new NGramsAnalyser
     val testData = Vector(
       "the apple fell from the tree",
       "Another sentence to test and play with",
@@ -36,7 +34,7 @@ class NgramTests extends FunSuite {
       "e_s" -> 1, "a_i" -> 1, "i_h" -> 1, "w_r" -> 1, "h_s" -> 1,
       "e_d" -> 1, "a_d" -> 1, "s_m" -> 1, "n_t" -> 1, "e_c" -> 1, "t_n" -> 1
     )
-    val result = nGramsAnalyser.getSkipGrams(testData,25)
+    val result = NGramsAnalyser.getSkipGrams(testData,25)
     assert(result equals expectedResult)
   }
 }

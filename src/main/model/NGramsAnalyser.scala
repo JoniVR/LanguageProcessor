@@ -4,13 +4,13 @@ import exception.NGramNotPossibleException
 
 import scala.collection.immutable.ListMap
 
-class NGramsAnalyser {
+object NGramsAnalyser {
 
   def getNgrams(vector: Vector[String], n: Int = 2, numberOfElements: Int): Map[String, Int] = {
     if (n <= 1) throw NGramNotPossibleException(s"The n-value $n is not possible.")
 
     vector.mkString
-      .toLowerCase.split(" ")
+      .toLowerCase.split(' ')
       .map(_.toCharArray)
       .flatMap(_
         .sliding(n).toList
@@ -25,7 +25,7 @@ class NGramsAnalyser {
 
   def getSkipGrams(vector: Vector[String], numberOfElements: Int): Map[String, Int] = {
     vector.mkString
-      .toLowerCase.split(" ")
+      .toLowerCase.split(' ')
       .map(_.toCharArray)
       .flatMap(_
         .sliding(3).toList

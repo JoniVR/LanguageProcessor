@@ -2,7 +2,7 @@ package utilities
 
 import model._
 
-class Processor {
+object Processor {
 
   /**
    * Function that handles the various processing operations.
@@ -67,7 +67,7 @@ class Processor {
     val alphabet = Alphabets.alphabets(language)
     val text = vector.mkString
     // make sure to only count letters that exist in specified language alphabet as letters!
-    val totalLetterCount: Double = text.filter(char => alphabet.contains(char)).length
+    val totalLetterCount: Double = text.filterNot(_.equals(' ')).length
     val resultMap: Map[Char, Double] = alphabet.map(letter => (letter, {
       val count = text.count(_ == letter)
       count/totalLetterCount
