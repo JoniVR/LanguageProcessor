@@ -60,7 +60,7 @@ object AnalysisJsonProtocol extends DefaultJsonProtocol {
           "language" -> JsString(analysis.language),
           "numberOfWordsStartingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsStartingWithLetter),
           "numberOfWordsEndingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsEndingWithLetter),
-          "frequencyOfLetter" -> transformDoubleMapToJsObject(analysis.frequencyOfLetters),
+          "frequencyOfLetters" -> transformDoubleMapToJsObject(analysis.frequencyOfLetters),
           "consonantsPercentage" -> JsNumber(analysis.consonantsPercentage),
           "vowelsPercentage" -> JsNumber(analysis.vowelsPercentage),
           "mostFrequentBiGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentBiGrams),
