@@ -1,6 +1,6 @@
 package exception
 
-final case class NGramNotPossibleException(message: String) extends RuntimeException(message) {
+final case class NGramImpossibleException(message: String) extends RuntimeException(message) {
 
   def this(message: String, cause: Throwable) {
     this(message)
