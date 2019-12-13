@@ -26,7 +26,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     )
 
     val result = Processor.filterNonAlphabetCharacters(testStringDutch, Languages.Dutch)
-    assert(result == expectedStringDutch)
+    assert(result equals expectedStringDutch)
   }
 
   test("calculateStartsOrEndsWithEachLetterOfAlphabetPercentage") {
@@ -93,5 +93,38 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     assert(resultMap("vowels") == 0.416)
     // 146/250 - consonants -> 0,584
     assert(resultMap("consonants") == 0.584)
+  }
+
+  test("calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams") {
+
+    val testStringDutch = Vector(
+      "dit is een test",
+      "nog een lijn om te testen ertussen test test",
+      "ik heb geen idee wat ik voor deze test moet verzinnen",
+      "dus typ ik maar gewoon wat er nu in me opkomt",
+      "de afwisselende hoofdletters zijn onderdeel van de test",
+      "ik heb echter geen inspiratie meer nu",
+      "hopelijk is het genoeg nu nieuwe test xenofobie hello"
+    ) // 250 characters
+
+    val resultStartsWith = Processor.calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams(testStringDutch, isStartsWith = true)
+    val resultMapStartsWith = Map(
+      "se" -> 0, "st" -> 0, "in" -> 2, "is" -> 2, "nu" -> 3,
+      "el" -> 0, "ge" -> 4, "at" -> 0, "wa" -> 2, "es" -> 0,
+      "oo" -> 0, "op" -> 1, "ij" -> 0, "nd" -> 0, "et" -> 0,
+      "de" -> 3, "en" -> 0, "he" -> 4, "te" -> 8, "ie" -> 0,
+      "ee" -> 2, "no" -> 1, "ik" -> 4, "ti" -> 0, "er" -> 2
+    )
+    assert(resultStartsWith equals resultMapStartsWith)
+
+    val resultEndsWith = Processor.calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams(testStringDutch, isStartsWith = false)
+    val resultMapEndsWith = Map(
+      "se" -> 0, "st" -> 6, "in" -> 1, "is" -> 2, "nu" -> 3,
+      "el" -> 1, "ge" -> 0, "at" -> 2, "wa" -> 0, "es" -> 0,
+      "oo" -> 0, "op" -> 0, "ij" -> 0, "nd" -> 0, "et" -> 2,
+      "de" -> 3, "en" -> 7, "he" -> 0, "te" -> 1, "ie" -> 2,
+      "ee" -> 1, "no" -> 0, "ik" -> 4, "ti" -> 0, "er" -> 3
+    )
+    assert(resultEndsWith equals resultMapEndsWith)
   }
 }
