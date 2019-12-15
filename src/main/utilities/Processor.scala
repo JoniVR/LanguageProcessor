@@ -120,11 +120,8 @@ object Processor {
     val trigrams = NGramsAnalyser.getNgrams(filteredVector, 3, 25)
     val totalWordCount = getTotalWordCount(filteredVector)
 
-    val bigramMap = bigrams
-      .transform((_,v) => v/totalWordCount)
-
-    val trigramMap = trigrams
-      .transform((_,v) => v/totalWordCount)
+    val bigramMap = bigrams.transform((_,v) => v/totalWordCount)
+    val trigramMap = trigrams.transform((_,v) => v/totalWordCount)
     (bigramMap, trigramMap)
   }
 
@@ -137,8 +134,7 @@ object Processor {
     val skipGrams = NGramsAnalyser.getSkipGrams(filteredVector, 25)
     val totalWordCount = getTotalWordCount(filteredVector)
 
-    skipGrams
-      .transform((_, v) => v/totalWordCount)
+    skipGrams.transform((_, v) => v/totalWordCount)
   }
 
   def calculateBigramAndSkipgramMatchingPercentage(filteredVector: Vector[String]): Unit = {
