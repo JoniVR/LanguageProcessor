@@ -109,8 +109,23 @@ object Processor {
       .toMap
   }
 
-  def calculateTopTwentyFiveBigramAndTrigramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
-    throw new NotImplementedError("Not implemented")
+  /**
+   * Calculates the frequency (as a percentage) of the top 25 bigrams and trigrams relative to the total word count and returns both as maps inside a tuple.
+   * @param filteredVector A vector where each value equals a line read from the text. THis should be filtered already to only contain valid chars.
+   * @return A tuple with as first value a map of bigrams with as key the bigram and as value the number of words that start or end with said bigram.
+   *         and as second value a map of trigrams with as key the trigram and as value the number of words that start or end with said trigram.
+   */
+  def calculateTopTwentyFiveBigramAndTrigramPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
+    val bigrams = NGramsAnalyser.getNgrams(filteredVector, 2, 25)
+    val trigrams = NGramsAnalyser.getNgrams(filteredVector, 3, 25)
+    val totalValidWordCount: Double = filteredVector.flatMap(_.split("\\W+")).length
+
+    val bigramMap = bigrams
+      .transform((_,v) => v/totalValidWordCount)
+
+    val trigramMap = trigrams
+      .transform((_,v) => v/totalValidWordCount)
+    (bigramMap, trigramMap)
   }
 
   def calculateTopTwentyFiveSkipgramPercentage(filteredVector: Vector[String]): Map[String, Double] = {

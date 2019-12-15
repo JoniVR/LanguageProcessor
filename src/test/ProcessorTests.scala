@@ -96,7 +96,6 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
   }
 
   test("calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams") {
-
     val testStringDutch = Vector(
       "dit is een test",
       "nog een lijn om te testen ertussen test test",
@@ -126,5 +125,28 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ee" -> 1, "no" -> 0, "ik" -> 4, "ti" -> 0, "er" -> 3
     )
     assert(resultEndsWith equals resultMapEndsWith)
+  }
+
+  test("calculateTopTwentyFiveBigramAndTrigramPercentage") {
+    val testStringDutch = Vector(
+      "dit is een test",
+      "nog een lijn om te testen ertussen test test",
+      "ik heb geen idee wat ik voor deze test moet verzinnen",
+      "dus typ ik maar gewoon wat er nu in me opkomt",
+      "de afwisselende hoofdletters zijn onderdeel van de test",
+      "ik heb echter geen inspiratie meer nu",
+      "hopelijk is het genoeg nu nieuwe test xenofobie hello"
+    ) // 250 characters, 59 words
+    val resultTuple = Processor.calculateTopTwentyFiveBigramAndTrigramPercentage(testStringDutch)
+    val bigramsResultMap = resultTuple._1
+    val trigramsResultMap = resultTuple._2
+    // "te" is present 11 times in 59 words
+    assert(bigramsResultMap("te") == 0.1864406779661017)
+    // "ge" is present 4 times in 59 words
+    assert(bigramsResultMap("ge") == 0.06779661016949153)
+    // "est" is present 7 times in 59 words
+    assert(trigramsResultMap("est") == 0.11864406779661017)
+    // "ter" is present 2 times in 59 words
+    assert(trigramsResultMap("ter") == 0.03389830508474576)
   }
 }

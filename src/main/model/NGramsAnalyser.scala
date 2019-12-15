@@ -10,7 +10,7 @@ object NGramsAnalyser {
     if (n <= 1) throw NGramNotPossibleException(s"The n-value $n is not possible.")
 
     vector.mkString
-      .toLowerCase.split(' ')
+      .toLowerCase.split("\\W+")
       .map(_.toCharArray)
       .flatMap(_
         .sliding(n).toList
@@ -25,7 +25,7 @@ object NGramsAnalyser {
 
   def getSkipGrams(vector: Vector[String], numberOfElements: Int): Map[String, Int] = {
     vector.mkString
-      .toLowerCase.split(' ')
+      .toLowerCase.split("\\W+")
       .map(_.toCharArray)
       .flatMap(_
         .sliding(3).toList
