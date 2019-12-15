@@ -149,4 +149,21 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     // "ter" is present 2 times in 59 words
     assert(trigramsResultMap("ter") == 0.03389830508474576)
   }
+
+  test("calculateTopTwentyFiveSkipgramPercentage") {
+    val testStringDutch = Vector(
+      "dit is een test",
+      "nog een lijn om te testen ertussen test test",
+      "ik heb geen idee wat ik voor deze test moet verzinnen",
+      "dus typ ik maar gewoon wat er nu in me opkomt",
+      "de afwisselende hoofdletters zijn onderdeel van de test",
+      "ik heb echter geen inspiratie meer nu",
+      "hopelijk is het genoeg nu nieuwe test xenofobie hello"
+    ) // 250 characters, 59 words
+    val resultMap = Processor.calculateTopTwentyFiveSkipgramPercentage(testStringDutch)
+    // "e_t" is present 9 times in 59 words
+    assert(resultMap("e_t") == 0.15254237288135594)
+    // "s_e" is present 3 times in 59 words
+    assert(resultMap("s_e") == 0.05084745762711865)
+  }
 }

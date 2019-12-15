@@ -118,21 +118,34 @@ object Processor {
   def calculateTopTwentyFiveBigramAndTrigramPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
     val bigrams = NGramsAnalyser.getNgrams(filteredVector, 2, 25)
     val trigrams = NGramsAnalyser.getNgrams(filteredVector, 3, 25)
-    val totalValidWordCount: Double = filteredVector.flatMap(_.split("\\W+")).length
+    val totalWordCount = getTotalWordCount(filteredVector)
 
     val bigramMap = bigrams
-      .transform((_,v) => v/totalValidWordCount)
+      .transform((_,v) => v/totalWordCount)
 
     val trigramMap = trigrams
-      .transform((_,v) => v/totalValidWordCount)
+      .transform((_,v) => v/totalWordCount)
     (bigramMap, trigramMap)
   }
 
+  /**
+   * Calculates the frequency (as a percentage) of the top 25 skipgrams relative to the total word count and returns them as a map.
+   * @param filteredVector A vector where each value equals a line read from the text. THis should be filtered already to only contain valid chars.
+   * @return A map containing the skipgram names as keys and the frequency relative to the total word count for each as values.
+   */
   def calculateTopTwentyFiveSkipgramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
-    throw new NotImplementedError("Not implemented")
+    val skipGrams = NGramsAnalyser.getSkipGrams(filteredVector, 25)
+    val totalWordCount = getTotalWordCount(filteredVector)
+
+    skipGrams
+      .transform((_, v) => v/totalWordCount)
   }
 
   def calculateBigramAndSkipgramMatchingPercentage(filteredVector: Vector[String]): Unit = {
     throw new NotImplementedError("Not implemented")
+  }
+
+  private def getTotalWordCount(filteredVector: Vector[String]): Double = {
+    filteredVector.flatMap(_.split("\\W+")).length
   }
 }
