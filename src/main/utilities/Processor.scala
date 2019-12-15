@@ -93,7 +93,7 @@ object Processor {
   /**
    * Calculates the frequency (as a percentage) of times one of the top 25 bigrams
    * in the text is part of the start (or end, depending on `isStartsWith`) of a word.
-   * @param filteredVector A vector where each value equals a line read from the text. THis should be filtered already to only contain valid chars.
+   * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
    * @param isStartsWith Indicates whether to look for the start or end of the word to match the letters.
    * @return A map with as key the bigram and as value the number of words that start or end with said bigram.
    */
@@ -111,7 +111,7 @@ object Processor {
 
   /**
    * Calculates the frequency (as a percentage) of the top 25 bigrams and trigrams relative to the total word count and returns both as maps inside a tuple.
-   * @param filteredVector A vector where each value equals a line read from the text. THis should be filtered already to only contain valid chars.
+   * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
    * @return A tuple with as first value a map of bigrams with as key the bigram and as value the number of words that start or end with said bigram.
    *         and as second value a map of trigrams with as key the trigram and as value the number of words that start or end with said trigram.
    */
@@ -127,7 +127,7 @@ object Processor {
 
   /**
    * Calculates the frequency (as a percentage) of the top 25 skipgrams relative to the total word count and returns them as a map.
-   * @param filteredVector A vector where each value equals a line read from the text. THis should be filtered already to only contain valid chars.
+   * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
    * @return A map containing the skipgram names as keys and the frequency relative to the total word count for each as values.
    */
   def calculateTopTwentyFiveSkipgramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
