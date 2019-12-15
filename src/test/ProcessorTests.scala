@@ -61,7 +61,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     assert(resultEmptyString('a') == 0)
   }
 
-  test("calculateAlphabetLetterFrequencyPercentage") {
+  test("calculateAlphabetLetterPercentage") {
     val testStringDutch = Vector(
       "dit is een test",
       "nog een lijn om te testen ertussen test test",
@@ -71,14 +71,14 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters
-    val resultMap = Processor.calculateAlphabetLetterFrequencyPercentage(Languages.Dutch, testStringDutch)
+    val resultMap = Processor.calculateAlphabetLetterPercentage(Languages.Dutch, testStringDutch)
     // 19/250, 7.6% of the text should be the letter 'i'
     assert(resultMap('i') == 0.076)
     // 10/200, 4% of the text should be the letter 'd'
     assert(resultMap('d') == 0.04)
 }
 
-  test("calculateVowelsAndConsonantsFrequencyPercentage") {
+  test("calculateVowelsAndConsonantsPercentage") {
     val testStringDutch = Vector(
       "dit is een test",
       "nog een lijn om te testen ertussen test test",
@@ -88,7 +88,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters
-    val resultMap = Processor.calculateVowelsAndConsonantsFrequencyPercentage(Languages.Dutch, testStringDutch)
+    val resultMap = Processor.calculateVowelsAndConsonantsPercentage(Languages.Dutch, testStringDutch)
     // 104/250 - vowels -> 0,416
     assert(resultMap("vowels") == 0.416)
     // 146/250 - consonants -> 0,584

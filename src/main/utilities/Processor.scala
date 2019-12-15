@@ -36,7 +36,7 @@ object Processor {
    * and as value the relative occurrence percentage of that letter.
    * @param language The language the vector will be in. This is important because different languages have different alphabets.
    * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
-   * @param isStartsWith Indicates whether to change to look for the start or end of the word to match the letters.
+   * @param isStartsWith Indicates whether to look for the start or end of the word to match the letters.
    * @return A map with as key the letter of the alphabet for the specific language
    *         and as value the occurrence percentage where that specific letter is the first (or last) letter of a word.
    */
@@ -63,7 +63,7 @@ object Processor {
    * @return A map with as key the letter of the alphabet for the specific language
    *         and as value the occurrence percentage relative to the total amount of characters of that language.
    */
-  def calculateAlphabetLetterFrequencyPercentage(language: Languages.Value, filteredVector: Vector[String]): Map[Char, Double] = {
+  def calculateAlphabetLetterPercentage(language: Languages.Value, filteredVector: Vector[String]): Map[Char, Double] = {
     val alphabet = Alphabets.alphabets(language)
     val text = filteredVector.mkString
     // make sure to only count letters that exist in specified language alphabet as letters!
@@ -82,7 +82,7 @@ object Processor {
    * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
    * @return A map with as key a string indicating what is being returned and as value the frequency percentage (vowel vs consonants).
    */
-  def calculateVowelsAndConsonantsFrequencyPercentage(language: Languages.Value, filteredVector: Vector[String]): Map[String, Double] = {
+  def calculateVowelsAndConsonantsPercentage(language: Languages.Value, filteredVector: Vector[String]): Map[String, Double] = {
     val text = filteredVector.mkString.filterNot(_.equals(' '))
     val totalValidCharCount: Double = text.length
     val vowelCount: Double = text.replaceAll(s"[^${Alphabets.vowels(language)}]","").length
@@ -90,6 +90,13 @@ object Processor {
     Map("vowels" -> vowelCount/totalValidCharCount, "consonants" -> consonantCount/totalValidCharCount)
   }
 
+  /**
+   * Calculates the frequency (as a percentage) of times one of the top 25 bigrams
+   * in the text is part of the start (or end, depending on `isStartsWith`) of a word.
+   * @param filteredVector A vector where each value equals a line read from the text. THis should be filtered already to only contain valid chars.
+   * @param isStartsWith Indicates whether to look for the start or end of the word to match the letters.
+   * @return A map with as key the bigram and as value the number of words that start or end with said bigram.
+   */
   def calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams(filteredVector: Vector[String], isStartsWith: Boolean): Map[String, Int] = {
     val bigrams = NGramsAnalyser.getNgrams(filteredVector, 2, 25).keys.toList
     val splitByWords = filteredVector.flatMap(_.split("\\W+"))
@@ -100,5 +107,17 @@ object Processor {
         else splitByWords.count(_.endsWith(value))
       }))
       .toMap
+  }
+
+  def calculateTopTwentyFiveBigramAndTrigramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
+    throw new NotImplementedError("Not implemented")
+  }
+
+  def calculateTopTwentyFiveSkipgramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
+    throw new NotImplementedError("Not implemented")
+  }
+
+  def calculateBigramAndSkipgramMatchingPercentage(filteredVector: Vector[String]): Unit = {
+    throw new NotImplementedError("Not implemented")
   }
 }
