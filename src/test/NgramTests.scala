@@ -45,10 +45,10 @@ class NgramTests extends FunSuite {
       "i need some inspiration for this test",
       "please work some more words"
     )
-    val result1 = NGramsAnalyser.getNgramFrequency(testData, "th")
+    val result1 = NGramsAnalyser.getNgramCount(testData, "th")
     // 5/25
     assert(result1 == 0.2)
-    val result2 = NGramsAnalyser.getNgramFrequency(testData, "in")
+    val result2 = NGramsAnalyser.getNgramCount(testData, "in")
     assert(result2 == 0.04)
   }
 }
