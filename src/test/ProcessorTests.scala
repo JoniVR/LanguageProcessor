@@ -26,7 +26,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     )
 
     val result = Processor.filterNonAlphabetCharacters(testStringDutch, Languages.Dutch)
-    assert(result equals expectedStringDutch)
+    assert(result == expectedStringDutch)
   }
 
   test("calculateStartsOrEndsWithEachLetterOfAlphabetPercentage") {
@@ -107,24 +107,16 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     ) // 250 characters
 
     val resultStartsWith = Processor.calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams(testStringDutch, isStartsWith = true)
-    val resultMapStartsWith = Map(
-      "se" -> 0, "st" -> 0, "in" -> 2, "is" -> 2, "nu" -> 3,
-      "el" -> 0, "ge" -> 4, "at" -> 0, "wa" -> 2, "es" -> 0,
-      "oo" -> 0, "op" -> 1, "ij" -> 0, "nd" -> 0, "et" -> 0,
-      "de" -> 3, "en" -> 0, "he" -> 4, "te" -> 8, "ie" -> 0,
-      "ee" -> 2, "no" -> 1, "ik" -> 4, "ti" -> 0, "er" -> 2
-    )
-    assert(resultStartsWith equals resultMapStartsWith)
+    assert(resultStartsWith("te") == 8)
+    assert(resultStartsWith("wa") == 2)
+    assert(resultStartsWith("ik") == 4)
+    assert(resultStartsWith.size == 25)
 
     val resultEndsWith = Processor.calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams(testStringDutch, isStartsWith = false)
-    val resultMapEndsWith = Map(
-      "se" -> 0, "st" -> 6, "in" -> 1, "is" -> 2, "nu" -> 3,
-      "el" -> 1, "ge" -> 0, "at" -> 2, "wa" -> 0, "es" -> 0,
-      "oo" -> 0, "op" -> 0, "ij" -> 0, "nd" -> 0, "et" -> 2,
-      "de" -> 3, "en" -> 7, "he" -> 0, "te" -> 1, "ie" -> 2,
-      "ee" -> 1, "no" -> 0, "ik" -> 4, "ti" -> 0, "er" -> 3
-    )
-    assert(resultEndsWith equals resultMapEndsWith)
+    assert(resultEndsWith("te") == 1)
+    assert(resultEndsWith("wa") == 0)
+    assert(resultEndsWith("ik") == 4)
+    assert(resultEndsWith.size == 25)
   }
 
   test("calculateTopTwentyFiveBigramAndTrigramPercentage") {
@@ -136,18 +128,21 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "de afwisselende hoofdletters zijn onderdeel van de test",
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
-    ) // 250 characters, 59 words
+    ) // 250 characters, 59 words, bigramCount = 197, trigramCount = 156
     val resultTuple = Processor.calculateTopTwentyFiveBigramAndTrigramPercentage(testStringDutch)
     val bigramsResultMap = resultTuple._1
     val trigramsResultMap = resultTuple._2
-    // "te" is present 11 times in 59 words
-    assert(bigramsResultMap("te") == 0.1864406779661017)
-    // "ge" is present 4 times in 59 words
-    assert(bigramsResultMap("ge") == 0.06779661016949153)
-    // "est" is present 7 times in 59 words
-    assert(trigramsResultMap("est") == 0.11864406779661017)
-    // "ter" is present 2 times in 59 words
-    assert(trigramsResultMap("ter") == 0.03389830508474576)
+
+    // "te" is present 11 times in 197 bigrams
+    assert(bigramsResultMap("te") == 0.05583756345177665)
+    // "ge" is present 4 times in 197 bigrams
+    assert(bigramsResultMap("ge") == 0.02030456852791878)
+    assert(bigramsResultMap.size == 25)
+    // "est" is present 7 times in 156 trigrams
+    assert(trigramsResultMap("est") == 0.04487179487179487)
+    // "ter" is present 2 times in 156 trigrams
+    assert(trigramsResultMap("ter") == 0.01282051282051282)
+    assert(trigramsResultMap.size == 25)
   }
 
   test("calculateTopTwentyFiveSkipgramPercentage") {
@@ -159,11 +154,12 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "de afwisselende hoofdletters zijn onderdeel van de test",
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
-    ) // 250 characters, 59 words
+    ) // 250 characters, 59 words, skipgramCount = 156
     val resultMap = Processor.calculateTopTwentyFiveSkipgramPercentage(testStringDutch)
-    // "e_t" is present 9 times in 59 words
-    assert(resultMap("e_t") == 0.15254237288135594)
-    // "s_e" is present 3 times in 59 words
-    assert(resultMap("s_e") == 0.05084745762711865)
+    // "e_t" is present 9 times in 156 skipgrams
+    assert(resultMap("e_t") == 0.057692307692307696)
+    // "s_e" is present 3 times in 156 skipgrams
+    assert(resultMap("s_e") == 0.019230769230769232)
+    assert(resultMap.size == 25)
   }
 }

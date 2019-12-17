@@ -10,14 +10,13 @@ class NgramTests extends FunSuite {
       "i need some inspiration for this test",
       "please work"
     )
-    val expectedResult: Map[String, Int] = Map(
-      "th" -> 5, "he" -> 3, "te" -> 3, "pl" -> 3, "or" -> 2, "ea" -> 2,
-      "se" -> 2, "le" -> 2, "st" -> 2, "om" -> 2, "en" -> 2, "es" -> 2,
-      "hi" -> 2, "an" -> 2, "ee" -> 2, "is" -> 1, "fe" -> 1, "ns" -> 1,
-      "la" -> 1, "to" -> 1, "pp" -> 1, "ir" -> 1, "nc" -> 1, "wi" -> 1, "in" -> 1
-    )
-    val result = NGramsAnalyser getNgrams(testData, 2, 25)
-    assert(result == expectedResult)
+    val result = NGramsAnalyser getNgrams(testData, 2)
+    assert(result.head._1 == "th")
+    assert(result.last._1 == "nt")
+    assert(result("th") == 5)
+    assert(result("he") == 3)
+    assert(result("st") == 2)
+    assert(result("nt") == 1)
   }
 
   test("testSkipGramCount") {
@@ -27,15 +26,11 @@ class NgramTests extends FunSuite {
       "i need some inspiration for this test",
       "please work"
     )
-    val expectedResult: Map[String, Int] = Map(
-      "t_e" -> 4, "n_e" -> 3, "e_t" -> 3, "p_e" -> 2, "t_i" -> 2,
-      "t_s" -> 2, "r_t" -> 1, "s_p" -> 1, "f_l" -> 1, "r_m" -> 1,
-      "a_e" -> 1, "a_o" -> 1, "r_e" -> 1, "r_e" -> 1, "e_n" -> 1,
-      "e_s" -> 1, "a_i" -> 1, "i_h" -> 1, "w_r" -> 1, "h_s" -> 1,
-      "e_d" -> 1, "a_d" -> 1, "s_m" -> 1, "n_t" -> 1, "e_c" -> 1, "t_n" -> 1
-    )
-    val result = NGramsAnalyser.getSkipGrams(testData,25)
-    assert(result == expectedResult)
+    val result = NGramsAnalyser.getSkipGrams(testData)
+    assert(result.size == 49)
+    assert(result("t_e") == 4)
+    assert(result("n_e") == 3)
+    assert(result("s_n") == 1)
   }
 
   test("getNgramFrequency") {

@@ -6,7 +6,7 @@ import scala.collection.immutable.ListMap
 
 object NGramsAnalyser {
 
-  def getNgrams(filteredVector: Vector[String], n: Int = 2, numberOfElements: Int): Map[String, Int] = {
+  def getNgrams(filteredVector: Vector[String], n: Int = 2): Map[String, Int] = {
     if (n <= 1) throw NGramNotPossibleException(s"The n-value $n is not possible.")
 
     filteredVector.mkString
@@ -20,10 +20,9 @@ object NGramsAnalyser {
       .toSeq
       .sortWith(_._2 > _._2) // sort by value
       .to(ListMap)
-      .take(numberOfElements)
   }
 
-  def getSkipGrams(filteredVector: Vector[String], numberOfElements: Int): Map[String, Int] = {
+  def getSkipGrams(filteredVector: Vector[String]): Map[String, Int] = {
     filteredVector.mkString
       .split("\\W+")
       .map(_.toCharArray)
@@ -37,7 +36,6 @@ object NGramsAnalyser {
       .toSeq
       .sortWith(_._2 > _._2) // sort by value
       .to(ListMap)
-      .take(numberOfElements)
   }
 
   /**
