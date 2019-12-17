@@ -112,8 +112,8 @@ object Processor {
   /**
    * Calculates the frequency (as a percentage) of the top 25 bigrams and trigrams relative to the total bigram or trigram count and returns both as maps inside a tuple.
    * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
-   * @return A tuple with as first value a map of bigrams with as key the bigram and as value the number of words that start or end with said bigram.
-   *         and as second value a map of trigrams with as key the trigram and as value the number of words that start or end with said trigram.
+   * @return A tuple with as first value a map of bigrams with as key the bigram and as value the relative occurrence compared to the total amount of bigrams in the text.
+   *         and as second value a map of trigrams with as key the trigram and as value the relative occurrence compared to the total amount of trigrams in the text.
    */
   def calculateTopTwentyFiveBigramAndTrigramPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
     val bigrams = NGramsAnalyser.getNgrams(filteredVector)
@@ -129,6 +129,8 @@ object Processor {
 
   /**
    * Calculates the frequency (as a percentage) of the top 25 skipgrams relative to the total skipgram count and returns them as a map.
+   * For each value in the skipgram map, the subsequent bigram count is fetched and the relative frequency is also returned as a map.
+   * Both of these maps are then returned inside a Tuple(SkipGramMap, BiGramMap)
    * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
    * @return A map containing the skipgram names as keys and the frequency relative to the total word count for each as values.
    */
@@ -138,13 +140,23 @@ object Processor {
     skipGrams.take(25).transform((_, v) => v/skipGramCount)
   }
 
-  //todo: implement & test
-//  def calculateBigramAndSkipgramMatchingPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
-//    val skipgrams = NGramsAnalyser.getSkipGrams(filteredVector)
-//    val bigrams = skipgrams.transform((k, _) => {
-//        val nGram = k.replaceAll("_","")
-//        NGramsAnalyser.getNgramCount(filteredVector, nGram)
-//      })
-//
-//  }
+  /**
+   * Calculates the frequency (as a percentage) of the bigram for all matching top 25 skipgrams.
+   * Returns both as maps with frequencies (relative to the total amount of bigrams/skipgrams) inside a Tuple(SkipGramMap, BiGramMap).
+   *
+   * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
+   * @return A tuple with as first value a map of the top 25 skipgrams with as key the skipgram and as value the relative occurrence compared to the total amount of skipgrams in the text.
+   *         and as second value a map of bigrams that match the skipgrams with as key the bigram and as value the relative occurrence compared to the total amount of bigrams in the text.
+   */
+  def calculateBigramAndSkipgramMatchingPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
+    val totalBiGramCount: Double = NGramsAnalyser.getNgrams(filteredVector).foldLeft(0)(_+_._2)
+    val skipGrams = calculateTopTwentyFiveSkipgramPercentage(filteredVector)
+
+    val biGrams = skipGrams.map(v => (v._1.replaceAll("_",""), {
+      val nGram = v._1.replaceAll("_","")
+      val biGramCount = NGramsAnalyser.getNgramCount(filteredVector, nGram)
+      biGramCount/totalBiGramCount
+    }))
+    (skipGrams, biGrams)
+  }
 }

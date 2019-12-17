@@ -162,4 +162,31 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     assert(resultMap("s_e") == 0.019230769230769232)
     assert(resultMap.size == 25)
   }
+
+  test("calculateBigramAndSkipgramMatchingPercentage") {
+    val testStringDutch = Vector(
+      "dit is een test",
+      "nog een lijn om te testen ertussen test test",
+      "ik heb geen idee wat ik voor deze test moet verzinnen",
+      "dus typ ik maar gewoon wat er nu in me opkomt",
+      "de afwisselende hoofdletters zijn onderdeel van de test",
+      "ik heb echter geen inspiratie meer nu",
+      "hopelijk is het genoeg nu nieuwe test xenofobie hello"
+    ) // 250 characters, 59 words, bigramCount = 197, skipgramCount = 156
+
+    val resultTuple = Processor.calculateBigramAndSkipgramMatchingPercentage(testStringDutch)
+    val skipGramMap = resultTuple._1
+    val biGramMap = resultTuple._2
+    // test if a bigram is present for every skipgram
+    assert(skipGramMap.map(v => (v._1.replaceAll("_",""),v._2)).keys == biGramMap.keys)
+    // test if both maps are 25 elements in size
+    assert(skipGramMap.size == 25)
+    assert(biGramMap.size == 25)
+    assert(skipGramMap("t_s") == 0.05128205128205128)
+    assert(biGramMap("ts") == 0)
+    assert(skipGramMap("s_i") == 0.019230769230769232)
+    assert(biGramMap("si") == 0)
+    assert(skipGramMap("e_t") == 0.057692307692307696)
+    assert(biGramMap("et") == 0.015228426395939087)
+  }
 }
