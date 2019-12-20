@@ -10,8 +10,8 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
   }
 
   test("testRemoveSpaces"){
-    val stringToTest = "( De notulen van preventie- en crisisbeheerscapaciteiten worden goedgekeurd ) Mijnheer de Voorzitter , ik heb een opmerking over de agenda van vandaag ."
-    val expectedResult = "(De notulen van preventie-en crisisbeheerscapaciteiten worden goedgekeurd) Mijnheer de Voorzitter, ik heb een opmerking over de agenda van vandaag."
+    val stringToTest = "( De notulen van preventie- en crisisbeheerscapaciteiten worden goedgekeurd ) Mijnheer de Voorzitter , ik heb een opmerking over de agenda ¡ van ¿ vandaag ."
+    val expectedResult = "(De notulen van preventie-en crisisbeheerscapaciteiten worden goedgekeurd) Mijnheer de Voorzitter, ik heb een opmerking over de agenda ¡van ¿vandaag."
     val result = Preprocessor.removeSpaces(stringToTest)
     assert(result === expectedResult)
   }
@@ -40,16 +40,14 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
     assert(Preprocessor.logWordCount(stringToTest2) == 21)
   }
 
-  // TODO: add more punctuation marks (spanish, french, german, ...) to test
-  //  ¿ ¡
   test("logPunctuationMarkCount") {
     
     val stringToTest =
       Vector("Allemaal !? . , - ( ) lees-tekens',",
         "hopelijk \" werkt het ook ")
-    val stringToTest2 = Vector(" ", "", "...",". . . ? ")
+    val stringToTest2 = Vector(" ", "", "...",". . . ? ¿ ¡ ")
     assert(Preprocessor.logPunctuationMarkCount(stringToTest) == 11)
-    assert(Preprocessor.logPunctuationMarkCount(stringToTest2) == 7)
+    assert(Preprocessor.logPunctuationMarkCount(stringToTest2) == 9)
   }
 
   test("logUppercaseCount") {

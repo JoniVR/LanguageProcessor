@@ -28,7 +28,9 @@ object Preprocessor {
       "/ " -> "/",
       "\" " -> "\"",
       "\"" -> " \"",
-      "- " -> "-"
+      "- " -> "-",
+      "¿ " -> "¿",
+      "¡ " -> "¡"
     )
     // traverse all replacements from left to right (`foldleft`) and apply `replaceAllLiterally` as operator to each one.
     manualReplacements.foldLeft(transformedLine)((a, b) => a.replaceAllLiterally(b._1, b._2))
@@ -56,7 +58,7 @@ object Preprocessor {
    */
   def logPunctuationMarkCount(vector: Vector[String]): Long = {
     val stringToMatch = vector.mkString
-    val regex = "\\p{Punct}"
+    val regex = "[\\p{Punct}¿¡]"
     val punctuationCount = regex.r.findAllIn(stringToMatch).length
     logger.info(s"Punctuation marks Count: $punctuationCount")
     punctuationCount
