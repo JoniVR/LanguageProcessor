@@ -128,7 +128,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "de afwisselende hoofdletters zijn onderdeel van de test",
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
-    ) // 250 characters, 59 words, bigramCount = 197, trigramCount = 156
+    ) // 250 characters, 59 words, bigramCount = 197, trigramCount = 144
     val resultTuple = Processor.calculateTop25BigramAndTrigramPercentage(testStringDutch)
     val bigramsResultMap = resultTuple._1
     val trigramsResultMap = resultTuple._2
@@ -138,10 +138,10 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     // "ge" is present 4 times in 197 bigrams
     assert(bigramsResultMap("ge") == 0.02030456852791878)
     assert(bigramsResultMap.size == 25)
-    // "est" is present 7 times in 156 trigrams
-    assert(trigramsResultMap("est") == 0.04487179487179487)
-    // "ter" is present 2 times in 156 trigrams
-    assert(trigramsResultMap("ter") == 0.01282051282051282)
+    // "est" is present 7 times in 144 trigrams
+    assert(trigramsResultMap("est") == 0.04861111111111111)
+    // "ter" is present 2 times in 144 trigrams
+    assert(trigramsResultMap("ter") == 0.013888888888888888)
     assert(trigramsResultMap.size == 25)
   }
 
@@ -154,12 +154,12 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "de afwisselende hoofdletters zijn onderdeel van de test",
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
-    ) // 250 characters, 59 words, skipgramCount = 156
+    ) // 250 characters, 59 words, skipgramCount = 95
     val resultMap = Processor.calculateTop25SkipgramPercentage(testStringDutch)
-    // "e_t" is present 9 times in 156 skipgrams
-    assert(resultMap("e_t") == 0.057692307692307696)
-    // "s_e" is present 3 times in 156 skipgrams
-    assert(resultMap("s_e") == 0.019230769230769232)
+    // "e_t" is present 9 times in 95 skipgrams
+    assert(resultMap("e_t") == 0.0625)
+    // "s_e" is present 3 times in 95 skipgrams
+    assert(resultMap("s_e") == 0.020833333333333332)
     assert(resultMap.size == 25)
   }
 
@@ -172,7 +172,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "de afwisselende hoofdletters zijn onderdeel van de test",
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
-    ) // 250 characters, 59 words, bigramCount = 197, skipgramCount = 156
+    ) // 250 characters, 59 words, bigramCount = 197, skipgramCount = 95
 
     val resultTuple = Processor.calculateBigramAndSkipgramMatchingPercentage(testStringDutch)
     val skipGramMap = resultTuple._1
@@ -182,11 +182,11 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     // test if both maps are 25 elements in size
     assert(skipGramMap.size == 25)
     assert(biGramMap.size == 25)
-    assert(skipGramMap("t_s") == 0.05128205128205128)
+    assert(skipGramMap("t_s") == 0.05555555555555555)
     assert(biGramMap("ts") == 0)
-    assert(skipGramMap("s_i") == 0.019230769230769232)
+    assert(skipGramMap("s_i") == 0.020833333333333332)
     assert(biGramMap("si") == 0)
-    assert(skipGramMap("e_t") == 0.057692307692307696)
+    assert(skipGramMap("e_t") == 0.0625)
     assert(biGramMap("et") == 0.015228426395939087)
   }
 }

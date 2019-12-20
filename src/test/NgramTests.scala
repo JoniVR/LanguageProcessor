@@ -27,7 +27,7 @@ class NgramTests extends FunSuite {
       "please work"
     )
     val result = NGramsAnalyser.getSkipGrams(testData)
-    assert(result.size == 49)
+    assert(result.size == 48)
     assert(result("t_e") == 4)
     assert(result("n_e") == 3)
     assert(result("s_n") == 1)

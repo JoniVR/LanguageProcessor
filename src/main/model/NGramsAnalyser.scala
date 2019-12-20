@@ -10,7 +10,7 @@ object NGramsAnalyser {
 
     filteredVector.mkString
       .split("\\W+")
-      .filter(_.length > n)
+      .filter(_.length >= n)
       .map(_.toCharArray)
       .flatMap(_
         .sliding(n).toList
