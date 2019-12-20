@@ -7,7 +7,7 @@ import utilities.AnalysisJsonProtocol._
 import scala.reflect.io.{File, Path}
 
 
-class IOManager {
+object IOManager {
   @throws(classOf[Exception])
   def readFile(filePath: String): Vector[String] = {
     var bufferedSource: io.Source = null

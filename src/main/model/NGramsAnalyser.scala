@@ -10,6 +10,7 @@ object NGramsAnalyser {
 
     filteredVector.mkString
       .split("\\W+")
+      .filter(_.length > n)
       .map(_.toCharArray)
       .flatMap(_
         .sliding(n).toList
@@ -24,6 +25,7 @@ object NGramsAnalyser {
   def getSkipGrams(filteredVector: Vector[String]): Map[String, Int] = {
     filteredVector.mkString
       .split("\\W+")
+      .filter(_.length > 2)
       .map(_.toCharArray)
       .flatMap(_
         .sliding(3).toList

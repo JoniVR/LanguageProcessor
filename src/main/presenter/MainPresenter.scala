@@ -6,7 +6,8 @@ import javafx.scene.control.{Alert, ButtonType, MenuItem}
 import javafx.scene.layout.Region
 import javafx.stage.{FileChooser, Stage}
 import org.apache.log4j.Logger
-import utilities.{IOManager, Preprocessor}
+import utilities.{IOManager, Preprocessor, Processor}
+import model.Languages
 
 class MainPresenter {
   @FXML private var uploadMenuItem: MenuItem = _
@@ -18,19 +19,21 @@ class MainPresenter {
 
   @FXML
   def uploadMenuClicked(): Unit = {
-    val ioManager = new IOManager()
     val fileChooser = new FileChooser
     try {
       val files = fileChooser.showOpenMultipleDialog(new Stage())
       if (files != null) {
         files.forEach(f => {
-          val fileVector = ioManager.readFile(f.getPath)
+          val fileVector = IOManager.readFile(f.getPath)
           preProcessFile(fileVector, f.getName)
+          val analysis = Processor.processText(fileVector, Languages.Dutch)
+          IOManager.writeAnalysis(analysis.name, analysis)
         })
       }
     }
     catch {
       case ex: Exception =>
+        ex.printStackTrace()
         val alert = new Alert(AlertType.ERROR, "Error trying to load file!", ButtonType.OK)
         alert.getDialogPane.setMinHeight(Region.USE_PREF_SIZE)
         alert.show()
