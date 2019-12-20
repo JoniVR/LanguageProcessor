@@ -6,7 +6,7 @@ import scala.collection.immutable.ListMap
 object NGramsAnalyser {
 
   def getNgrams(filteredVector: Vector[String], n: Int = 2): Map[String, Int] = {
-    if (n <= 1) throw NGramNotPossibleException(s"An ngram with an n-value of $n is not possible.")
+    if (n <= 1) throw NGramImpossibleException(s"An ngram with an n-value of $n is not possible.")
 
     filteredVector.mkString
       .split("\\W+")
