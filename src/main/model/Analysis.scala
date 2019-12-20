@@ -14,7 +14,7 @@ object Analysis {
       Map("A_C" -> 0.1, "B_D" -> 0.2),
       Map("AB" -> 1, "BC" -> 2),
       Map("ABC" -> 1, "BCD" -> 2),
-      Map("A_C" -> 1, "B_D" -> 2),
+      (Map("AC" -> 1, "BD" -> 2), Map("AC" -> 1, "BD" -> 2))
     )
   }
 }
@@ -23,15 +23,15 @@ case class Analysis
 (
   name: String,
   language: String,
-  numberOfWordsStartingWithLetter: Map[String, Int],
-  numberOfWordsEndingWithLetter: Map[String, Int],
+  numberOfWordsStartingWithLetter: Map[String, Double],
+  numberOfWordsEndingWithLetter: Map[String, Double],
   frequencyOfLetters: Map[String, Double],
-  consonantsPercentage: Int,
-  vowelsPercentage: Int,
+  consonantsPercentage: Double,
+  vowelsPercentage: Double,
   mostFrequentBiGrams: Map[String, Double],
   mostFrequentTriGrams: Map[String, Double],
   mostFrequentSkipGrams: Map[String, Double],
   mostFrequentBiGramsStartOfWord: Map[String, Int],
   mostFrequentBiGramsEndOfWord: Map[String, Int],
-  mostFrequentSkipGramsMatchingBiGramFrequency: Map[String, Double]
+  mostFrequentSkipGramsMatchingBiGramFrequency: (Map[String, Double], Map[String, Double])
 )

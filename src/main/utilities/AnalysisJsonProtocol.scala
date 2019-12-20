@@ -29,9 +29,9 @@ object AnalysisJsonProtocol extends DefaultJsonProtocol {
         language =
           fields("language").convertTo[String],
         numberOfWordsStartingWithLetter =
-          fields("numberOfWordsStartingWithLetter").convertTo[Map[String, Int]],
+          fields("numberOfWordsStartingWithLetter").convertTo[Map[String, Double]],
         numberOfWordsEndingWithLetter =
-          fields("numberOfWordsEndingWithLetter").convertTo[Map[String, Int]],
+          fields("numberOfWordsEndingWithLetter").convertTo[Map[String, Double]],
         frequencyOfLetters =
           fields("frequencyOfLetters").convertTo[Map[String, Double]],
         consonantsPercentage =
@@ -49,7 +49,7 @@ object AnalysisJsonProtocol extends DefaultJsonProtocol {
         mostFrequentBiGramsEndOfWord =
           fields("mostFrequentBiGramsEndOfWord").convertTo[Map[String, Int]],
         mostFrequentSkipGramsMatchingBiGramFrequency =
-          fields("mostFrequentSkipGramsMatchingBiGramFrequency").convertTo[Map[String, Double]]
+          fields("mostFrequentSkipGramsMatchingBiGramFrequency").convertTo[(Map[String, Double], Map[String, Double])]
       )
     }
 
@@ -58,8 +58,8 @@ object AnalysisJsonProtocol extends DefaultJsonProtocol {
         Map[String, JsValue](
           "name" -> JsString(analysis.name),
           "language" -> JsString(analysis.language),
-          "numberOfWordsStartingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsStartingWithLetter),
-          "numberOfWordsEndingWithLetter" -> transformIntMapToJsObject(analysis.numberOfWordsEndingWithLetter),
+          "numberOfWordsStartingWithLetter" -> transformDoubleMapToJsObject(analysis.numberOfWordsStartingWithLetter),
+          "numberOfWordsEndingWithLetter" -> transformDoubleMapToJsObject(analysis.numberOfWordsEndingWithLetter),
           "frequencyOfLetters" -> transformDoubleMapToJsObject(analysis.frequencyOfLetters),
           "consonantsPercentage" -> JsNumber(analysis.consonantsPercentage),
           "vowelsPercentage" -> JsNumber(analysis.vowelsPercentage),
@@ -68,7 +68,7 @@ object AnalysisJsonProtocol extends DefaultJsonProtocol {
           "mostFrequentSkipGrams" -> transformDoubleMapToJsObject(analysis.mostFrequentSkipGrams),
           "mostFrequentBiGramsStartOfWord" -> transformIntMapToJsObject(analysis.mostFrequentBiGramsStartOfWord),
           "mostFrequentBiGramsEndOfWord" -> transformIntMapToJsObject(analysis.mostFrequentBiGramsEndOfWord),
-          "mostFrequentSkipGramsMatchingBiGramFrequency" -> transformDoubleMapToJsObject(analysis.mostFrequentSkipGramsMatchingBiGramFrequency),
+          "mostFrequentSkipGramsMatchingBiGramFrequency" -> analysis.mostFrequentSkipGramsMatchingBiGramFrequency.toJson,
         )
       )
   }

@@ -9,10 +9,29 @@ object Processor {
    * @param vector The vector containing the text, each value should be a line from the text.
    * @param language The specified language of the text.
    *                 This is important as non-alphabet characters for that language will be filtered out.
+   * @return Returns an object of type `Analysis` used for writing data to json.
    */
-  def processText(vector: Vector[String], language: Languages.Value): Unit = {
+  def processText(vector: Vector[String], language: Languages.Value): Analysis = {
     val filteredVector = filterNonAlphabetCharacters(vector, language)
-    
+
+    val vowelsAndConsonantsPercentage = calculateVowelsAndConsonantsPercentage(language, filteredVector)
+    val mostFrequentBigramsAndSkipgrams = calculateTop25BigramAndTrigramPercentage(filteredVector)
+
+    Analysis(
+      s"Analysis ${language.toString}",
+      language.toString,
+      calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(language, filteredVector, isStartsWith = true),
+      calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(language, filteredVector, isStartsWith = false),
+      calculateAlphabetLetterPercentage(language, filteredVector),
+      vowelsAndConsonantsPercentage("vowels"),
+      vowelsAndConsonantsPercentage("consonants"),
+      mostFrequentBigramsAndSkipgrams._1,
+      mostFrequentBigramsAndSkipgrams._2,
+      calculateTop25SkipgramPercentage(filteredVector),
+      calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(filteredVector, isStartsWith = true),
+      calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(filteredVector, isStartsWith = false),
+      calculateBigramAndSkipgramMatchingPercentage(filteredVector)
+    )
   }
 
   /**
@@ -40,12 +59,12 @@ object Processor {
    * @return A map with as key the letter of the alphabet for the specific language
    *         and as value the occurrence percentage where that specific letter is the first (or last) letter of a word.
    */
-  def calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(language: Languages.Value, filteredVector: Vector[String], isStartsWith: Boolean): Map[Char, Double] = {
+  def calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(language: Languages.Value, filteredVector: Vector[String], isStartsWith: Boolean): Map[String, Double] = {
     val alphabet = Alphabets.alphabets(language)
     val splitByWords = filteredVector.flatMap(_.split("\\W+"))
     val totalWordCount: Double = splitByWords.length
 
-    val resultMap: Map[Char, Double] = alphabet.map(letter => (letter, {
+    val resultMap = alphabet.map(letter => (letter.toString, {
       val count = splitByWords.count(word => {
         if (isStartsWith) word.startsWith(letter.toString)
         else word.endsWith(letter.toString)
@@ -63,12 +82,12 @@ object Processor {
    * @return A map with as key the letter of the alphabet for the specific language
    *         and as value the occurrence percentage relative to the total amount of characters of that language.
    */
-  def calculateAlphabetLetterPercentage(language: Languages.Value, filteredVector: Vector[String]): Map[Char, Double] = {
+  def calculateAlphabetLetterPercentage(language: Languages.Value, filteredVector: Vector[String]): Map[String, Double] = {
     val alphabet = Alphabets.alphabets(language)
     val text = filteredVector.mkString
     // make sure to only count letters that exist in specified language alphabet as letters!
     val totalLetterCount: Double = text.filterNot(_.equals(' ')).length
-    val resultMap: Map[Char, Double] = alphabet.map(letter => (letter, {
+    val resultMap = alphabet.map(letter => (letter.toString, {
       val count = text.count(_ == letter)
       count/totalLetterCount
     })).toMap
@@ -97,7 +116,7 @@ object Processor {
    * @param isStartsWith Indicates whether to look for the start or end of the word to match the letters.
    * @return A map with as key the bigram and as value the number of words that start or end with said bigram.
    */
-  def calculateNumberOfWordsStartingOrEndingWithTopTwentyFiveBigrams(filteredVector: Vector[String], isStartsWith: Boolean): Map[String, Int] = {
+  def calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(filteredVector: Vector[String], isStartsWith: Boolean): Map[String, Int] = {
     val bigrams = NGramsAnalyser.getNgrams(filteredVector).take(25).keys.toList
     val splitByWords = filteredVector.flatMap(_.split("\\W+"))
 
@@ -115,7 +134,7 @@ object Processor {
    * @return A tuple with as first value a map of bigrams with as key the bigram and as value the relative occurrence compared to the total amount of bigrams in the text.
    *         and as second value a map of trigrams with as key the trigram and as value the relative occurrence compared to the total amount of trigrams in the text.
    */
-  def calculateTopTwentyFiveBigramAndTrigramPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
+  def calculateTop25BigramAndTrigramPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
     val bigrams = NGramsAnalyser.getNgrams(filteredVector)
     val trigrams = NGramsAnalyser.getNgrams(filteredVector, 3)
     // get sum of map values
@@ -134,7 +153,7 @@ object Processor {
    * @param filteredVector A vector where each value equals a line read from the text. This should be filtered already to only contain valid chars.
    * @return A map containing the skipgram names as keys and the frequency relative to the total word count for each as values.
    */
-  def calculateTopTwentyFiveSkipgramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
+  def calculateTop25SkipgramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
     val skipGrams = NGramsAnalyser.getSkipGrams(filteredVector)
     val skipGramCount: Double = skipGrams.foldLeft(0)(_+_._2)
     skipGrams.take(25).transform((_, v) => v/skipGramCount)
@@ -150,7 +169,7 @@ object Processor {
    */
   def calculateBigramAndSkipgramMatchingPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
     val totalBiGramCount: Double = NGramsAnalyser.getNgrams(filteredVector).foldLeft(0)(_+_._2)
-    val skipGrams = calculateTopTwentyFiveSkipgramPercentage(filteredVector)
+    val skipGrams = calculateTop25SkipgramPercentage(filteredVector)
 
     val biGrams = skipGrams.map(v => (v._1.replaceAll("_",""), {
       val nGram = v._1.replaceAll("_","")

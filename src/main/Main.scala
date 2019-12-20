@@ -3,6 +3,9 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
+import model.Analysis
+import utilities.AnalysisJsonProtocol
+import utilities._
 
 object Main
 {
@@ -16,6 +19,8 @@ class Main extends Application
 {
   override def start(primaryStage: Stage)
   {
+    val ioManager = new IOManager()
+    ioManager.writeAnalysis("test2",Analysis.getDummy)
     val loader = new FXMLLoader(getClass.getResource("/view/MainScene.fxml"))
     val mainPane: BorderPane = loader.load()
     val scene: Scene = new Scene(mainPane)
