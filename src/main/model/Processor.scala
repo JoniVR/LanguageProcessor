@@ -1,6 +1,4 @@
-package utilities
-
-import model._
+package model
 
 object Processor {
 

@@ -1,7 +1,8 @@
-package utilities
+package model
+
 import org.apache.log4j.Logger
 
-class Preprocessor {
+object Preprocessor {
 
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 

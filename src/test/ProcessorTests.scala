@@ -1,6 +1,5 @@
-import model.Languages
+import model.{Languages, Processor}
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import utilities.Processor
 
 import scala.math.ScalaNumber
 

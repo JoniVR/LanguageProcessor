@@ -6,15 +6,14 @@ import javafx.scene.control.{Alert, ButtonType, MenuItem}
 import javafx.scene.layout.Region
 import javafx.stage.{FileChooser, Stage}
 import org.apache.log4j.Logger
-import utilities.{IOManager, Preprocessor, Processor}
-import model.Languages
+import utilities.{IOManager}
+import model.{Languages, Preprocessor, Processor}
 
 class MainPresenter {
   @FXML private var uploadMenuItem: MenuItem = _
   @FXML private var preferencesMenuItem: MenuItem = _
   @FXML private var aboutMenuItem: MenuItem = _
 
-  private val preprocessor = new Preprocessor()
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   @FXML
@@ -26,6 +25,7 @@ class MainPresenter {
         files.forEach(f => {
           val fileVector = IOManager.readFile(f.getPath)
           preProcessFile(fileVector, f.getName)
+          // TODO: Change Language parameter to be dynamic based on selection
           val analysis = Processor.processText(fileVector, Languages.Dutch)
           IOManager.writeAnalysis(analysis.name, analysis)
         })
@@ -55,9 +55,9 @@ class MainPresenter {
     // using view on a vector is a lot more memory efficient compared to using a list and stream
     // see: https://docs.scala-lang.org/tutorials/FAQ/stream-view-iterator.html
     val processedList =
-      vector.view.filter(!preprocessor.findSpaceLines(_))
-        .map(preprocessor.removeSpaces)
+      vector.view.filter(!Preprocessor.findSpaceLines(_))
+        .map(Preprocessor.removeSpaces)
         .to(Vector)
-    preprocessor.doLogging(processedList, filename)
+    Preprocessor.doLogging(processedList, filename)
   }
 }
