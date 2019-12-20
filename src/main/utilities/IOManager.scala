@@ -34,6 +34,7 @@ class IOManager {
     val url = getClass.getResource("").getPath
     val path =
       Path(url).parent
+        .parent
         ./("analysis").createDirectory()
         ./(s"$fileName.json").path
 

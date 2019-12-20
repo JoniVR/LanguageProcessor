@@ -20,7 +20,9 @@ class Main extends Application
   override def start(primaryStage: Stage)
   {
     val ioManager = new IOManager()
-    ioManager.writeAnalysis("test2",Analysis.getDummy)
+    ioManager.writeAnalysis("test2", Analysis.getDummy)
+
+
     val loader = new FXMLLoader(getClass.getResource("/view/MainScene.fxml"))
     val mainPane: BorderPane = loader.load()
     val scene: Scene = new Scene(mainPane)
