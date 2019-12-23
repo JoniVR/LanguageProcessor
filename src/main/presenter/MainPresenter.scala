@@ -20,7 +20,7 @@ class MainPresenter {
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   @FXML
-  def uploadMenuClicked(): Unit = {
+  def newAnalysisMenuClicked(): Unit = {
     val fileChooser = new FileChooser
     try {
       val files = fileChooser.showOpenMultipleDialog(new Stage())
@@ -42,6 +42,10 @@ class MainPresenter {
         alert.show()
         logger.error(ex)
     }
+  }
+
+  def openAnalysisMenuClicked(): Unit = {
+    println("open analysis clicked")
   }
 
   @FXML
