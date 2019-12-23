@@ -1,20 +1,20 @@
 package model
 
+import java.util.Calendar
 import org.apache.log4j.Logger
 
 object Preprocessor {
 
-  //TODO: Add timestamp to logger
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   def doLogging(vector: Vector[String], fileName: String): Unit = {
     logger.info("--------- START RUN ---------")
     logger.info(s"Filename: '$fileName'")
+    logger.info(s"Execution date: ${Calendar.getInstance().getTime}")
     logWordCount(vector)
     logPunctuationMarkCount(vector)
     logUppercaseCount(vector)
     logLowercaseCount(vector)
-    logger.info("--------- END RUN ---------")
   }
 
   def removeSpaces(line: String): String = {
