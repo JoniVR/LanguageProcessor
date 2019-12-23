@@ -18,10 +18,10 @@ class MainPresenter {
   @FXML private var analysisTabPane: TabPane = _
 
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
+  private val fileChooser: FileChooser = new FileChooser
 
   @FXML
   def newAnalysisMenuClicked(): Unit = {
-    val fileChooser = new FileChooser
     try {
       val files = fileChooser.showOpenMultipleDialog(new Stage())
       if (files != null) {
@@ -35,17 +35,22 @@ class MainPresenter {
       }
     }
     catch {
-      case ex: Exception =>
-        ex.printStackTrace()
-        val alert = new Alert(AlertType.ERROR, "Error trying to load file!", ButtonType.OK)
-        alert.getDialogPane.setMinHeight(Region.USE_PREF_SIZE)
-        alert.show()
-        logger.error(ex)
+      case ex: Exception => showErrorDialog(ex)
     }
   }
 
+  @FXML
   def openAnalysisMenuClicked(): Unit = {
-    println("open analysis clicked")
+    try {
+      val files = fileChooser.showOpenMultipleDialog(new Stage())
+      files.forEach(f => {
+        val analysis = IOManager.readAnalysis(f.getPath)
+        openNewAnalysisTab(analysis)
+      })
+    }
+    catch {
+      case ex: Exception => showErrorDialog(ex)
+    }
   }
 
   @FXML
@@ -72,9 +77,9 @@ class MainPresenter {
   private def openNewAnalysisTab(analysis: Analysis): Unit = {
     val tab = new Tab(analysis.name)
     val loader = new FXMLLoader(getClass.getResource("/view/AnalysisTabContent.fxml"))
-    val controller: AnalysisTabPresenter = loader.getController()
-    val content: GridPane = loader.load()
-    controller.setAnalysis(analysis)
+    val content: GridPane = loader.load
+    val controller: AnalysisTabPresenter = loader.getController
+    controller.loadAnalysis(analysis)
 
     tab.setContent(content)
     analysisTabPane.getTabs.add(tab)

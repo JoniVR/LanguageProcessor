@@ -9,7 +9,7 @@ class AnalysisTabPresenter {
   @FXML private var analysisNameLabel: Label = _
   @FXML private var analysisLanguageLabel: Label = _
 
-  def setAnalysis(analysis: Analysis): Unit = {
+  def loadAnalysis(analysis: Analysis): Unit = {
     if (analysis == null) throw new IllegalArgumentException("Analysis cannot be null")
     analysisNameLabel.setText(analysis.name)
     analysisLanguageLabel.setText(analysis.language)
