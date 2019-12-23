@@ -9,14 +9,14 @@ object Processor {
    *                 This is important as non-alphabet characters for that language will be filtered out.
    * @return Returns an object of type `Analysis` used for writing data to json.
    */
-  def processText(vector: Vector[String], language: Languages.Value): Analysis = {
+  def processText(vector: Vector[String], name: String, language: Languages.Value): Analysis = {
     val filteredVector = filterNonAlphabetCharacters(vector, language)
 
     val vowelsAndConsonantsPercentage = calculateVowelsAndConsonantsPercentage(language, filteredVector)
     val mostFrequentBigramsAndSkipgrams = calculateTop25BigramAndTrigramPercentage(filteredVector)
 
     Analysis(
-      s"Analysis ${language.toString}",
+      name,
       language.toString,
       calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(language, filteredVector, isStartsWith = true),
       calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(language, filteredVector, isStartsWith = false),
