@@ -5,7 +5,6 @@ import org.apache.log4j.Logger
 
 object Preprocessor {
 
-  //TODO: Add timestamp to logger
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   def doLogging(vector: Vector[String], fileName: String): Unit = {
