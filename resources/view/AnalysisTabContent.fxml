@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane prefHeight="283.0" prefWidth="472.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presenter.AnalysisTabPresenter">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <BarChart minHeight="109.0" prefHeight="109.0" prefWidth="235.99990000000253" GridPane.columnIndex="0" fx:id="barChart"
+              GridPane.rowIndex="1">
+        <xAxis>
+            <CategoryAxis side="BOTTOM"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis side="LEFT"/>
+        </yAxis>
+    </BarChart>
+    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <Label text="Analysis: " HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                    <Insets left="10.0" top="10.0" fx:id="x1"/>
+                </HBox.margin>
+            </Label>
+            <Label text="Analysis Name" HBox.margin="$x1" fx:id="analysisNameLabel"/>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <Label text="Language:" HBox.margin="$x1"/>
+            <Label text="Analysis Language" HBox.margin="$x1" fx:id="analysisLanguageLabel"/>
+        </HBox>
+    </VBox>
+</GridPane>

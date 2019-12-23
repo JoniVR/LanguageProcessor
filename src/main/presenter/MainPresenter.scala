@@ -1,18 +1,21 @@
 package presenter
 
-import javafx.fxml.FXML
+import javafx.fxml.{FXML, FXMLLoader}
 import javafx.scene.control.Alert.AlertType
-import javafx.scene.control.{Alert, ButtonType, MenuItem}
-import javafx.scene.layout.Region
+import javafx.scene.control.{Alert, ButtonType, MenuItem, Tab, TabPane}
+import javafx.scene.layout.{GridPane, Region}
 import javafx.stage.{FileChooser, Stage}
+import model.Analysis
 import org.apache.log4j.Logger
 import utilities.{IOManager}
 import model.{Languages, Preprocessor, Processor}
 
 class MainPresenter {
-  @FXML private var uploadMenuItem: MenuItem = _
+  @FXML private var newAnalysisMenuItem: MenuItem = _
+  @FXML private var openAnalysisMenuItem: MenuItem = _
   @FXML private var preferencesMenuItem: MenuItem = _
   @FXML private var aboutMenuItem: MenuItem = _
+  @FXML private var analysisTabPane: TabPane = _
 
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
@@ -59,5 +62,28 @@ class MainPresenter {
         .map(Preprocessor.removeSpaces)
         .to(Vector)
     Preprocessor.doLogging(processedList, filename)
+  }
+
+
+  private def openNewAnalysisTab(analysis: Analysis): Unit = {
+    val tab = new Tab(analysis.name)
+    val loader = new FXMLLoader(getClass.getResource("/view/AnalysisTabContent.fxml"))
+    val controller: AnalysisTabPresenter = loader.getController()
+    val content: GridPane = loader.load()
+    controller.setAnalysis(analysis)
+
+    tab.setContent(content)
+    analysisTabPane.getTabs.add(tab)
+  }
+
+  /**
+   * Common error dialog for different uploads
+   */
+  private def showErrorDialog(ex: Exception): Unit = {
+    val errorDialog: Alert = new Alert(AlertType.ERROR, "Error trying to load file!", ButtonType.OK)
+    errorDialog.getDialogPane.setMinHeight(Region.USE_PREF_SIZE)
+    errorDialog.show()
+    logger.error(ex)
+    ex.printStackTrace()
   }
 }

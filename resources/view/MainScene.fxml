@@ -5,27 +5,21 @@
 
 <BorderPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presenter.MainPresenter">
   <center>
-    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
+    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" fx:id="analysisTabPane"/>
   </center>
   <top>
     <MenuBar>
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" onAction="#uploadMenuClicked" text="Upload" fx:id="uploadMenuItem" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Options">
-          <items>
-            <MenuItem mnemonicParsing="false" onAction="#preferencesMenuClicked" text="Preferences" fx:id="preferencesMenuItem" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" onAction="#aboutMenuClicked" text="About" fx:id="aboutMenuItem" />
-          </items>
-        </Menu>
-      </menus>
+      <Menu mnemonicParsing="false" text="Analysis">
+        <MenuItem mnemonicParsing="false" onAction="#newAnalysisMenuClicked" text="New Analysis" fx:id="newAnalysisMenuItem"/>
+        <MenuItem mnemonicParsing="false" onAction="#openAnalysisMenuClicked" text="Open Analysis" fx:id="openAnalysisMenuItem"/>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Options">
+        <MenuItem mnemonicParsing="false" onAction="#preferencesMenuClicked" text="Preferences"
+                  fx:id="preferencesMenuItem"/>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Help">
+        <MenuItem mnemonicParsing="false" onAction="#aboutMenuClicked" text="About" fx:id="aboutMenuItem"/>
+      </Menu>
     </MenuBar>
   </top>
 </BorderPane>
