@@ -1,26 +1,31 @@
 package model
 
 import exception.NGramImpossibleException
+import scala.collection.immutable.ListMap
 
-class NGramsAnalyser {
+object NGramsAnalyser {
 
-  def getNgrams(vector: Vector[String], n: Int = 2): Map[String, Int] = {
+  def getNgrams(filteredVector: Vector[String], n: Int = 2): Map[String, Int] = {
     if (n <= 1) throw NGramImpossibleException(s"An ngram with an n-value of $n is not possible.")
 
-    vector.mkString
-      .toLowerCase.split(" ")
+    filteredVector.mkString
+      .split("\\W+")
+      .filter(_.length >= n)
       .map(_.toCharArray)
       .flatMap(_
         .sliding(n).toList
         .map(_.mkString)
-      )
-      .groupBy(identity)
-      .transform((k, v) => v.size)
+      ).groupBy(identity)
+      .transform((_, v) => v.length)
+      .toSeq
+      .sortWith(_._2 > _._2) // sort by value
+      .to(ListMap)
   }
 
-  def getSkipGrams(vector: Vector[String]): Map[String, Int] = {
-    vector.mkString
-      .toLowerCase.split(" ")
+  def getSkipGrams(filteredVector: Vector[String]): Map[String, Int] = {
+    filteredVector.mkString
+      .split("\\W+")
+      .filter(_.length > 2)
       .map(_.toCharArray)
       .flatMap(_
         .sliding(3).toList
@@ -28,6 +33,19 @@ class NGramsAnalyser {
         .map(_.updated(1, '_'))
       )
       .groupBy(identity)
-      .transform((k, v) => v.size)
+      .transform((_, v) => v.length)
+      .toSeq
+      .sortWith(_._2 > _._2) // sort by value
+      .to(ListMap)
+  }
+
+  /**
+   * Gets amount of times that an ngram occurs inside the text (as filteredVector).
+   * @param filteredVector The text passed in as a vector where each value is a line from the text. This should be filtered already to only contain valid chars.
+   * @return A double indicating the percentage of occurrence in the text.
+   */
+  def getNgramCount(filteredVector: Vector[String], nGram: String): Double = {
+    val text = filteredVector.mkString
+    nGram.r.findAllIn(text).size
   }
 }

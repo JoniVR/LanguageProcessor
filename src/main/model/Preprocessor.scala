@@ -1,8 +1,10 @@
-package utilities
+package model
+
 import org.apache.log4j.Logger
 
-class Preprocessor {
+object Preprocessor {
 
+  //TODO: Add timestamp to logger
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
   def doLogging(vector: Vector[String], fileName: String): Unit = {
@@ -27,7 +29,9 @@ class Preprocessor {
       "/ " -> "/",
       "\" " -> "\"",
       "\"" -> " \"",
-      "- " -> "-"
+      "- " -> "-",
+      "¿ " -> "¿",
+      "¡ " -> "¡"
     )
     // traverse all replacements from left to right (`foldleft`) and apply `replaceAllLiterally` as operator to each one.
     manualReplacements.foldLeft(transformedLine)((a, b) => a.replaceAllLiterally(b._1, b._2))
@@ -55,7 +59,7 @@ class Preprocessor {
    */
   def logPunctuationMarkCount(vector: Vector[String]): Long = {
     val stringToMatch = vector.mkString
-    val regex = "\\p{Punct}"
+    val regex = "[\\p{Punct}¿¡]"
     val punctuationCount = regex.r.findAllIn(stringToMatch).length
     logger.info(s"Punctuation marks Count: $punctuationCount")
     punctuationCount
@@ -66,7 +70,7 @@ class Preprocessor {
    * @return The number of uppercase letters in the text. We return a value here for testing purposes.
    */
   def logUppercaseCount(vector: Vector[String]): Long = {
-    val upperCount = vector.mkString.count(c => c.isUpper)
+    val upperCount = vector.mkString.count(_.isUpper)
     logger.info(s"Uppercase letter Count: $upperCount")
     upperCount
   }
@@ -76,7 +80,7 @@ class Preprocessor {
    * @return The number of lowercase letters in the text. We return a value here for testing purposes.
    */
   def logLowercaseCount(vector: Vector[String]): Long = {
-    val lowerCount = vector.mkString.count(c => c.isLower)
+    val lowerCount = vector.mkString.count(_.isLower)
     logger.info(s"Lowercase letter Count: $lowerCount")
     lowerCount
   }
