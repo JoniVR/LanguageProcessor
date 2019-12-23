@@ -5,7 +5,7 @@
 
 <BorderPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presenter.MainPresenter">
   <center>
-    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" fx:id="analysisTabPane"/>
+    <TabPane prefHeight="200.0" prefWidth="200.0" fx:id="analysisTabPane"/>
   </center>
   <top>
     <MenuBar>

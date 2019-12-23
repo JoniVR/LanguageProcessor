@@ -103,7 +103,6 @@ class MainPresenter {
     val controller: AnalysisTabPresenter = loader.getController
     controller.loadAnalysis(analysis)
 
-    tab.setClosable(true)
     tab.setContent(content)
     analysisTabPane.getTabs.add(tab)
   }
