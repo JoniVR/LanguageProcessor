@@ -1,41 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane prefHeight="283.0" prefWidth="472.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presenter.AnalysisTabPresenter">
-    <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-    </rowConstraints>
-    <BarChart minHeight="109.0" prefHeight="109.0" prefWidth="235.99990000000253" GridPane.columnIndex="0" fx:id="barChart"
-              GridPane.rowIndex="1">
-        <xAxis>
-            <CategoryAxis side="BOTTOM"/>
-        </xAxis>
-        <yAxis>
-            <NumberAxis side="LEFT"/>
-        </yAxis>
-    </BarChart>
-    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <HBox prefHeight="100.0" prefWidth="200.0">
-            <Label text="Analysis: " HBox.hgrow="ALWAYS">
-                <HBox.margin>
-                    <Insets left="10.0" top="10.0" fx:id="x1"/>
-                </HBox.margin>
-            </Label>
-            <Label text="Analysis Name" HBox.margin="$x1" fx:id="analysisNameLabel"/>
-        </HBox>
-        <HBox prefHeight="100.0" prefWidth="200.0">
-            <Label text="Language:" HBox.margin="$x1"/>
-            <Label text="Analysis Language" HBox.margin="$x1" fx:id="analysisLanguageLabel"/>
-        </HBox>
-    </VBox>
-</GridPane>
+<BorderPane id="analysisTab" fx:id="rootPane" maxWidth="-1.0" minHeight="-1.0" minWidth="-1.0" prefHeight="581.0" prefWidth="875.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presenter.AnalysisTabPresenter">
+  <top>
+    <HBox prefHeight="57.0" prefWidth="464.0">
+      <HBox prefHeight="100.0" prefWidth="200.0">
+        <Label text="Language:">
+          <HBox.margin>
+            <Insets left="10.0" top="10.0" fx:id="x1" />
+          </HBox.margin>
+        </Label>
+        <Label fx:id="analysisLanguageLabel" text="Analysis Language" HBox.margin="$x1" />
+        <HBox.margin>
+          <Insets top="10.0" fx:id="x2" />
+        </HBox.margin>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="300.0" HBox.margin="$x2">
+        <children>
+          <Label text="Name:" HBox.hgrow="ALWAYS" HBox.margin="$x1" />
+          <Label fx:id="analysisNameLabel" text="Analysis Name" HBox.margin="$x1" />
+        </children>
+      </HBox>
+      <HBox prefHeight="47.0" prefWidth="450.0" HBox.margin="$x2">
+        <children>
+          <Label prefWidth="55.0" text="Analysis:" HBox.hgrow="ALWAYS" HBox.margin="$x2" />
+          <ComboBox fx:id="analysisTypeComboBox" minWidth="-1.0" prefHeight="21.0" prefWidth="350.0" HBox.hgrow="ALWAYS">
+            <items>
+              <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Words starting with letter in alphabet" />
+                <String fx:value="Words ending with letter in alphabet" />
+                <String fx:value="Frequency of letter in alphabet" />
+                <String fx:value="Vowels and consonants" />
+                <String fx:value="Number of words starting with most frequent bigrams" />
+                <String fx:value="Number of words ending with most frequent bigrams" />
+                <String fx:value="Frequency of bigrams" />
+                <String fx:value="Frequency of trigrams" />
+                <String fx:value="Frequency of skipgrams" />
+                <String fx:value="Corresponding frequency of most frequent skipgrams" />
+              </FXCollections>
+            </items>
+            <HBox.margin>
+              <Insets left="10.0" top="10.0" fx:id="x3" />
+            </HBox.margin>
+          </ComboBox>
+        </children>
+      </HBox>
+    </HBox>
+  </top>
+</BorderPane>

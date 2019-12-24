@@ -9,7 +9,7 @@ import javafx.geometry.Insets
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.ButtonBar.ButtonData
 import javafx.scene.control.{Alert, ButtonType, ComboBox, Dialog, Label, MenuItem, Tab, TabPane, TextField}
-import javafx.scene.layout.{GridPane, Region}
+import javafx.scene.layout.{BorderPane, GridPane, Region}
 import javafx.stage.{FileChooser, Stage}
 import javafx.util.Pair
 import model.Analysis
@@ -99,7 +99,7 @@ class MainPresenter {
   private def openNewAnalysisTab(analysis: Analysis): Unit = {
     val tab = new Tab(analysis.name)
     val loader = new FXMLLoader(getClass.getResource("/view/AnalysisTabContent.fxml"))
-    val content: GridPane = loader.load
+    val content: BorderPane = loader.load
     val controller: AnalysisTabPresenter = loader.getController
     controller.loadAnalysis(analysis)
 
