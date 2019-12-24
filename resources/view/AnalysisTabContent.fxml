@@ -42,7 +42,7 @@
                 <String fx:value="Frequency of bigrams" />
                 <String fx:value="Frequency of trigrams" />
                 <String fx:value="Frequency of skipgrams" />
-                <String fx:value="Corresponding frequency of most frequent skipgrams" />
+                <String fx:value="Corresponding bigram frequency of most frequent skipgrams" />
               </FXCollections>
             </items>
             <HBox.margin>

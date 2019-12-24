@@ -2,12 +2,11 @@ package presenter
 
 import java.util.Comparator
 
-import javafx.collections.{FXCollections, ObservableList}
+import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.geometry.Side
-import javafx.scene.chart.{BarChart, CategoryAxis, NumberAxis, PieChart, XYChart}
+import javafx.scene.chart._
 import javafx.scene.control.{ComboBox, Label, Tooltip}
-import javafx.scene.input.MouseEvent
 import javafx.scene.layout.BorderPane
 import model.Analysis
 
@@ -35,14 +34,13 @@ class AnalysisTabPresenter {
   private def analysisSelectionSetup(analysis: Analysis): Unit = {
     analysisTypeComboBox.valueProperty.addListener((o: javafx.beans.value.ObservableValue[_ <: String], oldVal: String, newVal: String) => {
       newVal match {
-        case "Words starting with letter in alphabet" => {
+
+        case "Words starting with letter in alphabet" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("Letter")
           yAxis.setLabel("Frequency (%)")
-
           val series = new XYChart.Series[String, Number]()
           analysis.numberOfWordsStartingWithLetter
             .foreach(el => {
@@ -52,16 +50,14 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Words ending with letter in alphabet" => {
+
+        case "Words ending with letter in alphabet" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("Letter")
           yAxis.setLabel("Frequency (%)")
-
           val series = new XYChart.Series[String, Number]()
           analysis.numberOfWordsEndingWithLetter
             .foreach(el => {
@@ -71,16 +67,14 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Frequency of letter in alphabet" => {
+
+        case "Frequency of letter in alphabet" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("Letter")
           yAxis.setLabel("Frequency (%)")
-
           val series = new XYChart.Series[String, Number]()
           analysis.frequencyOfLetters
             .foreach(el => {
@@ -90,32 +84,27 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Vowels and consonants" => {
+        case "Vowels and consonants" =>
           val data = FXCollections.observableArrayList(
             new PieChart.Data("Vowels", analysis.vowelsPercentage),
             new PieChart.Data("Consonants", analysis.consonantsPercentage)
           )
           val chart = new PieChart(data)
           chart.setLegendSide(Side.LEFT)
-
           chart.getData.forEach(data => {
             val caption = s"${data.getPieValue * 100} %"
             val tooltip = new Tooltip(caption)
             Tooltip.install(data.getNode, tooltip)
           })
           rootPane.setCenter(chart)
-        }
 
-        case "Number of words starting with most frequent bigrams" => {
+        case "Number of words starting with most frequent bigrams" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("bigram")
           yAxis.setLabel("Frequency")
-
           val series = new XYChart.Series[String, Number]()
           analysis.mostFrequentBiGramsStartOfWord
             .foreach(el => {
@@ -125,16 +114,13 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Number of words ending with most frequent bigrams" => {
+        case "Number of words ending with most frequent bigrams" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("bigram")
           yAxis.setLabel("Frequency")
-
           val series = new XYChart.Series[String, Number]()
           analysis.mostFrequentBiGramsEndOfWord
             .foreach(el => {
@@ -144,16 +130,13 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Frequency of bigrams" => {
+        case "Frequency of bigrams" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("bigram")
           yAxis.setLabel("Frequency (%)")
-
           val series = new XYChart.Series[String, Number]()
           analysis.mostFrequentBiGrams
             .foreach(el => {
@@ -163,16 +146,13 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Frequency of trigrams" => {
+        case "Frequency of trigrams" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("trigram")
           yAxis.setLabel("Frequency (%)")
-
           val series = new XYChart.Series[String, Number]()
           analysis.mostFrequentTriGrams
             .foreach(el => {
@@ -182,16 +162,13 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Frequency of skipgrams" => {
+        case "Frequency of skipgrams" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
           val chart = new BarChart[String, Number](xAxis, yAxis)
-
           xAxis.setLabel("skipgram")
           yAxis.setLabel("Frequency (%)")
-
           val series = new XYChart.Series[String, Number]()
           analysis.mostFrequentSkipGrams
             .foreach(el => {
@@ -201,14 +178,30 @@ class AnalysisTabPresenter {
           chart.getData.add(series)
           chart.setLegendVisible(false)
           rootPane.setCenter(chart)
-        }
 
-        case "Corresponding frequency of most frequent skipgrams" => {
-          println("10")
-        }
-        case _ => {
-          println("Nope")
-        }
+        case "Corresponding bigram frequency of most frequent skipgrams" =>
+          val xAxis = new CategoryAxis
+          val yAxis = new NumberAxis
+          val chart = new BarChart[String, Number](xAxis, yAxis)
+          xAxis.setLabel("Ngram")
+          yAxis.setLabel("Frequency (%)")
+          val series1 = new XYChart.Series[String, Number]()
+          val series2 = new XYChart.Series[String, Number]()
+          analysis.mostFrequentSkipGramsMatchingBiGramFrequency._1
+            .foreach(el => {
+              series1.getData.add(new XYChart.Data(el._1.replace("_", ""), el._2))
+            })
+          analysis.mostFrequentSkipGramsMatchingBiGramFrequency._2
+            .foreach(el => {
+              series2.getData.add(new XYChart.Data(el._1, el._2))
+            })
+          series1.getData.sort(Comparator.comparingDouble(data => - data.getYValue.doubleValue()))
+          series1.setName("Skipgrams")
+          series2.setName("Bigrams")
+          chart.getData.addAll(series1, series2)
+          rootPane.setCenter(chart)
+
+        case _ => ???
       }
     })
   }
