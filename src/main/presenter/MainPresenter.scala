@@ -135,9 +135,8 @@ class MainPresenter {
     grid.setPadding(new Insets(20, 150, 10, 10))
 
     val nameField = new TextField
-    nameField.setPromptText("Name")
-    // set default analysis name to filename without extension
-    nameField.setText(filename.replaceAll("\\.[^.]*$", ""))
+    val filenameWithoutExtension = Option(filename.replaceAll("\\.[^.]*$", ""))
+    nameField.setPromptText(filenameWithoutExtension.getOrElse("Name"))
 
     val languageOptions = FXCollections.observableArrayList[String]()
     Languages.values
@@ -160,7 +159,8 @@ class MainPresenter {
 
     optionDialog.setResultConverter(dialogButton => {
       if (dialogButton == startButtonType) {
-        new Pair(nameField.getText, languageComboBox.getValue)
+        val analysisName = if (nameField.getText != null && nameField.getText.length > 0) nameField.getText else nameField.getPromptText
+        new Pair(analysisName, languageComboBox.getValue)
       } else {
        null
       }
