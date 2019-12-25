@@ -104,6 +104,7 @@ class MainPresenter {
 
     tab.setContent(content)
     analysisTabPane.getTabs.add(tab)
+    analysisTabPane.getSelectionModel.select(tab)
   }
 
   /**
@@ -135,6 +136,8 @@ class MainPresenter {
 
     val nameField = new TextField
     nameField.setPromptText("Name")
+    // set default analysis name to filename without extension
+    nameField.setText(filename.replaceAll("\\.[^.]*$", ""))
 
     val languageOptions = FXCollections.observableArrayList[String]()
     Languages.values
