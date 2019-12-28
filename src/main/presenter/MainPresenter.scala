@@ -3,20 +3,19 @@ package presenter
 import java.util.Optional
 
 import exception.LanguageNotSupportedException
-import javafx.collections.{FXCollections, ObservableList}
+import javafx.collections.FXCollections
 import javafx.concurrent.{Service, Task}
 import javafx.fxml.{FXML, FXMLLoader}
 import javafx.geometry.Insets
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.ButtonBar.ButtonData
-import javafx.scene.control.{Alert, ButtonType, ComboBox, Dialog, Label, MenuItem, ProgressIndicator, Tab, TabPane, TextField}
+import javafx.scene.control._
 import javafx.scene.layout.{BorderPane, GridPane, Region}
 import javafx.stage.{FileChooser, Stage}
 import javafx.util.Pair
-import model.Analysis
+import model.{Analysis, Languages, Preprocessor, Processor}
 import org.apache.log4j.Logger
 import utilities.IOManager
-import model.{Languages, Preprocessor, Processor}
 
 class MainPresenter {
   @FXML private var newAnalysisMenuItem: MenuItem = _
