@@ -57,10 +57,12 @@ class MainPresenter {
   def openAnalysisMenuClicked(): Unit = {
     try {
       val files = fileChooser.showOpenMultipleDialog(new Stage())
-      files.forEach(f => {
-        val analysis = IOManager.readAnalysis(f.getPath)
-        openNewAnalysisTab(analysis)
-      })
+      if (files != null) {
+        files.forEach(f => {
+          val analysis = IOManager.readAnalysis(f.getPath)
+          openNewAnalysisTab(analysis)
+        })
+      }
     }
     catch {
       case ex: Exception => showErrorDialog(ex)
