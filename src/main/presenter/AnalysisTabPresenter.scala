@@ -34,7 +34,6 @@ class AnalysisTabPresenter {
   private def analysisSelectionSetup(analysis: Analysis): Unit = {
     analysisTypeComboBox.valueProperty.addListener((o: javafx.beans.value.ObservableValue[_ <: String], oldVal: String, newVal: String) => {
       newVal match {
-
         case "Words starting with letter in alphabet" =>
           val xAxis = new CategoryAxis
           val yAxis = new NumberAxis
@@ -200,8 +199,6 @@ class AnalysisTabPresenter {
           series2.setName("Bigrams")
           chart.getData.addAll(series1, series2)
           rootPane.setCenter(chart)
-
-        case _ => ???
       }
     })
     analysisTypeComboBox.getSelectionModel.selectFirst()
