@@ -19,7 +19,7 @@ class AnalysisTabPresenter {
 
   /**
    * Configures the new tab when an analysis is loaded
-   * @param analysis
+   * @param analysis ...
    */
   def loadAnalysis(analysis: Analysis): Unit = {
     if (analysis == null) throw new IllegalArgumentException("Analysis cannot be null")
@@ -199,6 +199,8 @@ class AnalysisTabPresenter {
           series2.setName("Bigrams")
           chart.getData.addAll(series1, series2)
           rootPane.setCenter(chart)
+
+        case _ => throw new NotImplementedError
       }
     })
     analysisTypeComboBox.getSelectionModel.selectFirst()

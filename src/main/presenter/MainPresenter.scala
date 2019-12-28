@@ -4,11 +4,12 @@ import java.util.Optional
 
 import exception.LanguageNotSupportedException
 import javafx.collections.{FXCollections, ObservableList}
+import javafx.concurrent.{Service, Task}
 import javafx.fxml.{FXML, FXMLLoader}
 import javafx.geometry.Insets
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.ButtonBar.ButtonData
-import javafx.scene.control.{Alert, ButtonType, ComboBox, Dialog, Label, MenuItem, Tab, TabPane, TextField}
+import javafx.scene.control.{Alert, ButtonType, ComboBox, Dialog, Label, MenuItem, ProgressIndicator, Tab, TabPane, TextField}
 import javafx.scene.layout.{BorderPane, GridPane, Region}
 import javafx.stage.{FileChooser, Stage}
 import javafx.util.Pair
@@ -34,20 +35,36 @@ class MainPresenter {
         files.forEach(f => {
           val result = showAnalysisOptionDialog(f.getName)
           val options = result.orElseThrow(() => new NoSuchElementException("No analysis options were given"))
-          val name = options.getKey
+          val filename = options.getKey
           val language = Languages.withName(options.getValue)
           if (language == null) throw LanguageNotSupportedException("Language is not supported.")
 
-          val fileVector = IOManager.readFile(f.getPath)
-          preProcessFile(fileVector, options.getKey)
-
-          /*
-          TODO: Fix user having to close program before analysis file is written
-                and thus being unable to select analysis after processing...
-           */
-          val analysis = Processor.processText(fileVector, name, language)
-          IOManager.writeAnalysis(analysis.name, analysis)
-          openNewAnalysisTab(analysis)
+          val lines = IOManager.readFile(f.getPath)
+          val service = new Service[Analysis] {
+            override def createTask(): Task[Analysis] = () => {
+              val processedList =
+                lines.view.filter(!Preprocessor.findSpaceLines(_))
+                  .map(Preprocessor.removeSpaces)
+                  .to(Vector)
+              Preprocessor.doLogging(processedList, filename)
+              Processor.processText(lines, filename, language)
+            }
+          }
+          val runningAlert = createAnalysisRunningDialog(filename, language, service)
+          service.setOnRunning(_ => runningAlert.showAndWait())
+          service.setOnSucceeded(_ => {
+            runningAlert.close()
+            val analysis = service.getValue
+            openNewAnalysisTab(analysis)
+            IOManager.writeAnalysis(filename, analysis)
+          })
+          service.setOnFailed(_ => {
+            showErrorDialog(new Exception("Analysis failed."))
+          })
+          service.setOnCancelled(_ => {
+            println("Analysis cancelled!")
+          })
+          service.start()
         })
       }
     }
@@ -75,21 +92,6 @@ class MainPresenter {
   @FXML
   def aboutMenuClicked(): Unit = {
     println("about clicked")
-  }
-
-  /**
-   * Starts the preprocessing of the uploaded file
-   * @param vector text in the given file as a vector of strings
-   * @param filename ...
-   */
-  private def preProcessFile(vector: Vector[String], filename: String): Unit = {
-    // using view on a vector is a lot more memory efficient compared to using a list and stream
-    // see: https://docs.scala-lang.org/tutorials/FAQ/stream-view-iterator.html
-    val processedList =
-      vector.view.filter(!Preprocessor.findSpaceLines(_))
-        .map(Preprocessor.removeSpaces)
-        .to(Vector)
-    Preprocessor.doLogging(processedList, filename)
   }
 
   /**
@@ -169,5 +171,28 @@ class MainPresenter {
 
     val result = optionDialog.showAndWait()
     result
+  }
+
+  def createAnalysisRunningDialog(name: String, language: Languages.Value, service: Service[Analysis]): Dialog[Void] = {
+    val dialog = new Dialog[Void]
+    dialog.setTitle("Analysis in progress")
+    dialog.setHeaderText("A new file is being analysed.\nThis might take a while.")
+    dialog.setContentText(s"Name: $name\nLanguage: $language")
+
+    val cancelButtonType = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE)
+    dialog.getDialogPane.getButtonTypes.add(cancelButtonType)
+    dialog.setResultConverter(button => {
+      if (button == cancelButtonType) {
+        service.cancel()
+      }
+      null
+    })
+    dialog.setOnCloseRequest(_ => service.cancel())
+
+    val progress = new ProgressIndicator
+    progress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS)
+    dialog.setGraphic(progress)
+
+    dialog
   }
 }
