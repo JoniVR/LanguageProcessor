@@ -1,11 +1,10 @@
 package utilities
 
+import java.nio.file.{Files, Paths}
+
 import model.Analysis
 import spray.json._
 import utilities.AnalysisJsonProtocol._
-
-import scala.reflect.io.{File, Path}
-
 
 object IOManager {
   @throws(classOf[Exception])
@@ -31,16 +30,9 @@ object IOManager {
    */
   def writeAnalysis(fileName: String, analysis: Analysis): Unit = {
     val content = analysis.toJson.prettyPrint
-    val url = getClass.getResource("").getPath
-    val path =
-      Path(url).parent
-        .parent
-        ./("analysis").createDirectory()
-        ./(s"$fileName.json").path
-
-    File(path)
-      .createFile()
-      .writeAll(content)
+    val URI = System.getProperty("user.dir")
+    val path = Paths.get(URI.toString, s"/analysis/$fileName.json")
+    Files.write(path, content.getBytes())
   }
 
   /**

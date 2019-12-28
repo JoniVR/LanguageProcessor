@@ -56,7 +56,6 @@ class MainPresenter {
     }
   }
 
-  // TODO: better error handling in case of pressing cancel?
   @FXML
   def openAnalysisMenuClicked(): Unit = {
     try {
