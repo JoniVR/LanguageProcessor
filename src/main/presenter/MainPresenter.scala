@@ -47,7 +47,7 @@ class MainPresenter {
                   .map(Preprocessor.removeSpaces)
                   .to(Vector)
               Preprocessor.doLogging(processedList, filename)
-              Processor.processText(lines, filename, language)
+              Processor.processText(processedList, filename, language)
             }
           }
           val runningAlert = createAnalysisRunningDialog(filename, language, service)
