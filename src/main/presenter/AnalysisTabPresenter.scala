@@ -204,5 +204,6 @@ class AnalysisTabPresenter {
         case _ => ???
       }
     })
+    analysisTypeComboBox.getSelectionModel.selectFirst()
   }
 }

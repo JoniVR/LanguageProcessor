@@ -20,7 +20,6 @@ import model.{Languages, Preprocessor, Processor}
 class MainPresenter {
   @FXML private var newAnalysisMenuItem: MenuItem = _
   @FXML private var openAnalysisMenuItem: MenuItem = _
-  @FXML private var preferencesMenuItem: MenuItem = _
   @FXML private var aboutMenuItem: MenuItem = _
   @FXML private var analysisTabPane: TabPane = _
 
@@ -42,6 +41,10 @@ class MainPresenter {
           val fileVector = IOManager.readFile(f.getPath)
           preProcessFile(fileVector, options.getKey)
 
+          /*
+          TODO: Fix user having to close program before analysis file is written
+                and thus being unable to select analysis after processing...
+           */
           val analysis = Processor.processText(fileVector, name, language)
           IOManager.writeAnalysis(analysis.name, analysis)
           openNewAnalysisTab(analysis)
@@ -53,6 +56,7 @@ class MainPresenter {
     }
   }
 
+  // TODO: better error handling in case of pressing cancel?
   @FXML
   def openAnalysisMenuClicked(): Unit = {
     try {
@@ -67,11 +71,6 @@ class MainPresenter {
     catch {
       case ex: Exception => showErrorDialog(ex)
     }
-  }
-
-  @FXML
-  def preferencesMenuClicked(): Unit = {
-    println("preferences clicked")
   }
 
   @FXML
@@ -107,6 +106,7 @@ class MainPresenter {
 
     tab.setContent(content)
     analysisTabPane.getTabs.add(tab)
+    analysisTabPane.getSelectionModel.select(tab)
   }
 
   /**
@@ -137,7 +137,8 @@ class MainPresenter {
     grid.setPadding(new Insets(20, 150, 10, 10))
 
     val nameField = new TextField
-    nameField.setPromptText("Name")
+    val filenameWithoutExtension = Option(filename.replaceAll("\\.[^.]*$", ""))
+    nameField.setPromptText(filenameWithoutExtension.getOrElse("Name"))
 
     val languageOptions = FXCollections.observableArrayList[String]()
     Languages.values
@@ -160,7 +161,8 @@ class MainPresenter {
 
     optionDialog.setResultConverter(dialogButton => {
       if (dialogButton == startButtonType) {
-        new Pair(nameField.getText, languageComboBox.getValue)
+        val analysisName = if (nameField.getText != null && nameField.getText.length > 0) nameField.getText else nameField.getPromptText
+        new Pair(analysisName, languageComboBox.getValue)
       } else {
        null
       }
