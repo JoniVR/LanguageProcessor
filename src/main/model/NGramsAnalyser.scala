@@ -4,7 +4,7 @@ import exception.NGramImpossibleException
 
 import scala.collection.immutable.ListMap
 
-object NGramsAnalyser {
+class NGramsAnalyser {
 
   def getNgrams(filteredVector: Vector[String], n: Int = 2): Map[String, Int] = {
     if (n <= 1) throw NGramImpossibleException(s"An ngram with an n-value of $n is not possible.")

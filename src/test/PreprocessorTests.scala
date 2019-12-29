@@ -12,17 +12,19 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
   test("testRemoveSpaces"){
     val stringToTest = "( De notulen van preventie- en crisisbeheerscapaciteiten worden goedgekeurd ) Mijnheer de Voorzitter , ik heb een opmerking over de agenda ¡ van ¿ vandaag ."
     val expectedResult = "(De notulen van preventie-en crisisbeheerscapaciteiten worden goedgekeurd) Mijnheer de Voorzitter, ik heb een opmerking over de agenda ¡van ¿vandaag."
-    val result = Preprocessor.removeSpaces(stringToTest)
+    val preprocessor = new Preprocessor
+    val result = preprocessor.removeSpaces(stringToTest)
     assert(result === expectedResult)
   }
 
   test("findSpaceLines") {
+    val preprocessor = new Preprocessor
     val emptyLine = " "
-    assert(Preprocessor.findSpaceLines(emptyLine))
+    assert(preprocessor.findSpaceLines(emptyLine))
     val emptyLine2 = ""
-    assert(Preprocessor.findSpaceLines(emptyLine2))
+    assert(preprocessor.findSpaceLines(emptyLine2))
     val nonEmptyLine = " test"
-    assert(!Preprocessor.findSpaceLines(nonEmptyLine))
+    assert(!preprocessor.findSpaceLines(nonEmptyLine))
   }
 
   test("logWordCount") {
@@ -31,13 +33,14 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
       "Zodat we word count kunnen testen.",
       "Als we dit niet doen zijn we nooit zeker of de functie effectief werkt!"
     )
-    assert(Preprocessor.logWordCount(stringToTest) == 28)
+    val preprocessor = new Preprocessor
+    assert(preprocessor.logWordCount(stringToTest) == 28)
     val stringToTest2 = Vector(
       "Dit zijn nog een paar zinnen..",
       "Kwestie van zeker te zijn?",
       "We zullen ook-tussen de woorden zetten en zelfs- test."
     )
-    assert(Preprocessor.logWordCount(stringToTest2) == 21)
+    assert(preprocessor.logWordCount(stringToTest2) == 21)
   }
 
   test("logPunctuationMarkCount") {
@@ -46,8 +49,9 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
       Vector("Allemaal !? . , - ( ) lees-tekens',",
         "hopelijk \" werkt het ook ")
     val stringToTest2 = Vector(" ", "", "...",". . . ? ¿ ¡ ")
-    assert(Preprocessor.logPunctuationMarkCount(stringToTest) == 11)
-    assert(Preprocessor.logPunctuationMarkCount(stringToTest2) == 9)
+    val preprocessor = new Preprocessor
+    assert(preprocessor.logPunctuationMarkCount(stringToTest) == 11)
+    assert(preprocessor.logPunctuationMarkCount(stringToTest2) == 9)
   }
 
   test("logUppercaseCount") {
@@ -58,7 +62,8 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
       "",
       "Hello World"
     )
-    assert(Preprocessor.logUppercaseCount(stringToTest) == 31)
+    val preprocessor = new Preprocessor
+    assert(preprocessor.logUppercaseCount(stringToTest) == 31)
   }
 
   test("logLowercaseCount") {
@@ -69,6 +74,7 @@ class PreprocessorTests extends FunSuite with BeforeAndAfter {
       "",
       "Hello World"
     )
-    assert(Preprocessor.logLowercaseCount(stringToTest) == 51)
+    val preprocessor = new Preprocessor
+    assert(preprocessor.logLowercaseCount(stringToTest) == 51)
   }
 }

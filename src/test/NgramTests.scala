@@ -10,7 +10,8 @@ class NgramTests extends FunSuite {
       "i need some inspiration for this test",
       "please work"
     )
-    val result = NGramsAnalyser getNgrams(testData, 2)
+    val nGramsAnalyser = new NGramsAnalyser
+    val result = nGramsAnalyser getNgrams(testData, 2)
     assert(result.head._1 == "th")
     assert(result.last._1 == "nt")
     assert(result("th") == 5)
@@ -26,7 +27,8 @@ class NgramTests extends FunSuite {
       "i need some inspiration for this test",
       "please work"
     )
-    val result = NGramsAnalyser.getSkipGrams(testData)
+    val nGramsAnalyser = new NGramsAnalyser
+    val result = nGramsAnalyser.getSkipGrams(testData)
     assert(result.size == 48)
     assert(result("t_e") == 4)
     assert(result("n_e") == 3)
@@ -40,9 +42,10 @@ class NgramTests extends FunSuite {
       "i need some inspiration for this test",
       "please work some more words"
     )
-    val result1 = NGramsAnalyser.getNgramCount(testData, "th")
+    val nGramsAnalyser = new NGramsAnalyser
+    val result1 = nGramsAnalyser.getNgramCount(testData, "th")
     assert(result1 == 5)
-    val result2 = NGramsAnalyser.getNgramCount(testData, "in")
+    val result2 = nGramsAnalyser.getNgramCount(testData, "in")
     assert(result2 == 1)
   }
 }

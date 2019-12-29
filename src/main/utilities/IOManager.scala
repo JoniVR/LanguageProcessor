@@ -6,7 +6,7 @@ import model.Analysis
 import spray.json._
 import utilities.AnalysisJsonProtocol._
 
-object IOManager {
+class IOManager {
   @throws(classOf[Exception])
   def readFile(filePath: String): Vector[String] = {
     var bufferedSource: io.Source = null

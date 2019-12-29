@@ -37,16 +37,18 @@ class MainPresenter {
           val filename = options.getKey
           val language = Languages.withName(options.getValue)
           if (language == null) throw LanguageNotSupportedException("Language is not supported.")
-
-          val lines = IOManager.readFile(f.getPath)
+          val ioManager = new IOManager
+          val preprocessor = new Preprocessor
+          val processor = new Processor
+          val lines = ioManager.readFile(f.getPath)
           val service = new Service[Analysis] {
             override def createTask(): Task[Analysis] = () => {
               val processedList =
-                lines.view.filter(!Preprocessor.findSpaceLines(_))
-                  .map(Preprocessor.removeSpaces)
+                lines.view.filter(!preprocessor.findSpaceLines(_))
+                  .map(preprocessor.removeSpaces)
                   .to(Vector)
-              Preprocessor.doLogging(processedList, filename)
-              Processor.processText(processedList, filename, language)
+              preprocessor.doLogging(processedList, filename)
+              processor.processText(processedList, filename, language)
             }
           }
           val runningAlert = createAnalysisRunningDialog(filename, language, service)
@@ -55,7 +57,7 @@ class MainPresenter {
             runningAlert.close()
             val analysis = service.getValue
             openNewAnalysisTab(analysis)
-            IOManager.writeAnalysis(filename, analysis)
+            ioManager.writeAnalysis(filename, analysis)
           })
           service.setOnFailed(_ => {
             showErrorDialog(new Exception("Analysis failed."))
@@ -75,10 +77,11 @@ class MainPresenter {
   @FXML
   def openAnalysisMenuClicked(): Unit = {
     try {
+      val ioManager = new IOManager
       val files = fileChooser.showOpenMultipleDialog(new Stage())
       if (files != null) {
         files.forEach(f => {
-          val analysis = IOManager.readAnalysis(f.getPath)
+          val analysis = ioManager.readAnalysis(f.getPath)
           openNewAnalysisTab(analysis)
         })
       }

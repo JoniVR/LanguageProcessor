@@ -21,8 +21,8 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echt geen inspiratie meer nu",
       "hopelijk is het genoeg nu  test xenofobie "
     )
-
-    val result = Processor.filterNonAlphabetCharacters(testStringDutch, Languages.Dutch)
+    val processor = new Processor
+    val result = processor.filterNonAlphabetCharacters(testStringDutch, Languages.Dutch)
     assert(result == expectedStringDutch)
   }
 
@@ -35,7 +35,8 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echt geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 50 words
-    val resultMapStartsWith = Processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = true)
+    val processor = new Processor
+    val resultMapStartsWith = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = true)
     // all these percentages have been checked manually
     // 18% starts with i
     assert(resultMapStartsWith("i") == 0.18)
@@ -44,7 +45,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
     // 8% starts with m
     assert(resultMapStartsWith("m") == 0.08)
 
-    val resultMapEndsWith = Processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = false)
+    val resultMapEndsWith = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testStringDutch, isStartsWith = false)
     // 0% ends with i
     assert(resultMapEndsWith("i") == 0.0)
     // 10% starts with x
@@ -54,7 +55,7 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
 
     val testEmptyString = Vector("")
 
-    val resultEmptyString = Processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testEmptyString, isStartsWith = true)
+    val resultEmptyString = processor.calculateStartsOrEndsWithEachLetterOfAlphabetPercentage(Languages.Dutch, testEmptyString, isStartsWith = true)
     assert(resultEmptyString("a") == 0)
   }
 
@@ -68,7 +69,8 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters
-    val resultMap = Processor.calculateAlphabetLetterPercentage(Languages.Dutch, testStringDutch)
+    val processor = new Processor
+    val resultMap = processor.calculateAlphabetLetterPercentage(Languages.Dutch, testStringDutch)
     // 19/250, 7.6% of the text should be the letter "i"
     assert(resultMap("i") == 0.076)
     // 10/200, 4% of the text should be the letter "d"
@@ -85,7 +87,8 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters
-    val resultMap = Processor.calculateVowelsAndConsonantsPercentage(Languages.Dutch, testStringDutch)
+    val processor = new Processor
+    val resultMap = processor.calculateVowelsAndConsonantsPercentage(Languages.Dutch, testStringDutch)
     // 104/250 - vowels -> 0,416
     assert(resultMap("vowels") == 0.416)
     // 146/250 - consonants -> 0,584
@@ -102,14 +105,14 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters
-
-    val resultStartsWith = Processor.calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(testStringDutch, isStartsWith = true)
+    val processor = new Processor
+    val resultStartsWith = processor.calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(testStringDutch, isStartsWith = true)
     assert(resultStartsWith("te") == 8)
     assert(resultStartsWith("wa") == 2)
     assert(resultStartsWith("ik") == 4)
     assert(resultStartsWith.size == 25)
 
-    val resultEndsWith = Processor.calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(testStringDutch, isStartsWith = false)
+    val resultEndsWith = processor.calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(testStringDutch, isStartsWith = false)
     assert(resultEndsWith("te") == 1)
     assert(resultEndsWith("wa") == 0)
     assert(resultEndsWith("ik") == 4)
@@ -126,7 +129,8 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters, 59 words, bigramCount = 197, trigramCount = 144
-    val resultTuple = Processor.calculateTop25BigramAndTrigramPercentage(testStringDutch)
+    val processor = new Processor
+    val resultTuple = processor.calculateTop25BigramAndTrigramPercentage(testStringDutch)
     val bigramsResultMap = resultTuple._1
     val trigramsResultMap = resultTuple._2
 
@@ -152,7 +156,8 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters, 59 words, skipgramCount = 95
-    val resultMap = Processor.calculateTop25SkipgramPercentage(testStringDutch)
+    val processor = new Processor
+    val resultMap = processor.calculateTop25SkipgramPercentage(testStringDutch)
     // "e_t" is present 9 times in 95 skipgrams
     assert(resultMap("e_t") == 0.0625)
     // "s_e" is present 3 times in 95 skipgrams
@@ -170,8 +175,8 @@ class ProcessorTests extends FunSuite with BeforeAndAfter {
       "ik heb echter geen inspiratie meer nu",
       "hopelijk is het genoeg nu nieuwe test xenofobie hello"
     ) // 250 characters, 59 words, bigramCount = 197, skipgramCount = 95
-
-    val resultTuple = Processor.calculateBigramAndSkipgramMatchingPercentage(testStringDutch)
+    val processor = new Processor
+    val resultTuple = processor.calculateBigramAndSkipgramMatchingPercentage(testStringDutch)
     val skipGramMap = resultTuple._1
     val biGramMap = resultTuple._2
     // test if a bigram is present for every skipgram

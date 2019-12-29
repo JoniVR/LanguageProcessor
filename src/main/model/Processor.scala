@@ -1,6 +1,6 @@
 package model
 
-object Processor {
+class Processor {
 
   /**
    * Function that handles the various processing operations.
@@ -115,7 +115,8 @@ object Processor {
    * @return A map with as key the bigram and as value the number of words that start or end with said bigram.
    */
   def calculateNumberOfWordsStartingOrEndingWithTop25Bigrams(filteredVector: Vector[String], isStartsWith: Boolean): Map[String, Int] = {
-    val bigrams = NGramsAnalyser.getNgrams(filteredVector).take(25).keys.toList
+    val nGramsAnalyser = new NGramsAnalyser
+    val bigrams = nGramsAnalyser.getNgrams(filteredVector).take(25).keys.toList
     val splitByWords = filteredVector.flatMap(_.split("\\W+"))
 
     bigrams
@@ -133,8 +134,9 @@ object Processor {
    *         and as second value a map of trigrams with as key the trigram and as value the relative occurrence compared to the total amount of trigrams in the text.
    */
   def calculateTop25BigramAndTrigramPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
-    val bigrams = NGramsAnalyser.getNgrams(filteredVector)
-    val trigrams = NGramsAnalyser.getNgrams(filteredVector, 3)
+    val nGramsAnalyser = new NGramsAnalyser
+    val bigrams = nGramsAnalyser.getNgrams(filteredVector)
+    val trigrams = nGramsAnalyser.getNgrams(filteredVector, 3)
     // get sum of map values
     val bigramCount: Double = bigrams.foldLeft(0)(_+_._2)
     val trigramCount: Double = trigrams.foldLeft(0)(_+_._2)
@@ -152,7 +154,8 @@ object Processor {
    * @return A map containing the skipgram names as keys and the frequency relative to the total word count for each as values.
    */
   def calculateTop25SkipgramPercentage(filteredVector: Vector[String]): Map[String, Double] = {
-    val skipGrams = NGramsAnalyser.getSkipGrams(filteredVector)
+    val nGramsAnalyser = new NGramsAnalyser
+    val skipGrams = nGramsAnalyser.getSkipGrams(filteredVector)
     val skipGramCount: Double = skipGrams.foldLeft(0)(_+_._2)
     skipGrams.take(25).transform((_, v) => v/skipGramCount)
   }
@@ -166,12 +169,13 @@ object Processor {
    *         and as second value a map of bigrams that match the skipgrams with as key the bigram and as value the relative occurrence compared to the total amount of bigrams in the text.
    */
   def calculateBigramAndSkipgramMatchingPercentage(filteredVector: Vector[String]): (Map[String, Double], Map[String, Double]) = {
-    val totalBiGramCount: Double = NGramsAnalyser.getNgrams(filteredVector).foldLeft(0)(_+_._2)
+    val nGramsAnalyser = new NGramsAnalyser
+    val totalBiGramCount: Double = nGramsAnalyser.getNgrams(filteredVector).foldLeft(0)(_+_._2)
     val skipGrams = calculateTop25SkipgramPercentage(filteredVector)
 
     val biGrams = skipGrams.map(v => (v._1.replaceAll("_",""), {
       val nGram = v._1.replaceAll("_","")
-      val biGramCount = NGramsAnalyser.getNgramCount(filteredVector, nGram)
+      val biGramCount = nGramsAnalyser.getNgramCount(filteredVector, nGram)
       biGramCount/totalBiGramCount
     }))
     (skipGrams, biGrams)

@@ -4,7 +4,7 @@ import java.util.Calendar
 
 import org.apache.log4j.Logger
 
-object Preprocessor {
+class Preprocessor {
 
   private val logger: Logger = Logger.getLogger(this.getClass.getName)
 
