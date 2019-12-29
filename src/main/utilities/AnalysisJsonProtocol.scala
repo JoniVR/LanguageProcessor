@@ -35,9 +35,9 @@ object AnalysisJsonProtocol extends DefaultJsonProtocol {
         frequencyOfLetters =
           fields("frequencyOfLetters").convertTo[Map[String, Double]],
         consonantsPercentage =
-          fields("consonantsPercentage").convertTo[Int],
+          fields("consonantsPercentage").convertTo[Double],
         vowelsPercentage =
-          fields("vowelsPercentage").convertTo[Int],
+          fields("vowelsPercentage").convertTo[Double],
         mostFrequentBiGrams =
           fields("mostFrequentBiGrams").convertTo[Map[String, Double]],
         mostFrequentTriGrams =

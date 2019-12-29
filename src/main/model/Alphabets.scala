@@ -6,6 +6,7 @@ object Alphabets {
     Languages.Finnish -> "abcdefghijklmnopqrstuvwxyzäö",
     Languages.Italian -> "abcdefghilmnopqrstuvz",
     Languages.Dutch -> "abcdefghijklmnopqrstuvwxyz",
+    Languages.English -> "abcdefghijklmnopqrstuvwxyz",
     Languages.Portuguese -> "abcdefghijklmnopqrstuvwxyz",
     Languages.Slovenian -> "abcčdefghijklmnoprsštuvzž",
     Languages.Spanish -> "abcdefghijklmnñopqrstuvwxyz"
@@ -17,6 +18,7 @@ object Alphabets {
     Languages.Finnish -> "aeiouäö",
     Languages.Italian -> "aeiou",
     Languages.Dutch -> "aeiou",
+    Languages.English -> "aeiou",
     Languages.Portuguese -> "aeiou",
     Languages.Slovenian -> "aeiou",
     Languages.Spanish -> "aeiou"
@@ -28,6 +30,7 @@ object Alphabets {
     Languages.Finnish -> "bcdfghjklmnpqrstvwxyz",
     Languages.Italian -> "bcdfghlmnpqrstvz",
     Languages.Dutch -> "bcdfghjklmnpqrstvwxyz",
+    Languages.English -> "bcdfghjklmnpqrstvwxyz",
     Languages.Portuguese -> "bcdfghjklmnpqrstvwxyz",
     Languages.Slovenian -> "bcčdfghjklmnprsštvzž",
     Languages.Spanish -> "bcdfghjklmnñpqrstvwxyz"
