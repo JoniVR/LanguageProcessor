@@ -1,6 +1,7 @@
 package model
 
 import exception.NGramImpossibleException
+
 import scala.collection.immutable.ListMap
 
 object NGramsAnalyser {

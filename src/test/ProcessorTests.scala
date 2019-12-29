@@ -1,8 +1,6 @@
 import model.{Languages, Processor}
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
-import scala.math.ScalaNumber
-
 class ProcessorTests extends FunSuite with BeforeAndAfter {
 
   test("filterNonAlphabetCharacters") {
