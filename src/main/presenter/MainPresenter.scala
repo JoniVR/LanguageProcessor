@@ -91,7 +91,20 @@ class MainPresenter {
 
   @FXML
   def aboutMenuClicked(): Unit = {
-    println("about clicked")
+    val alert = new Alert(AlertType.INFORMATION)
+    alert.setTitle("About")
+    alert.setHeaderText("NGram Analyser")
+    val about =
+    """
+        |This application was developed by:
+        |Joni Van Roost
+        |Toon Van Deuren
+        |
+        |Application Development at
+        |Karel de Grote Hogeschool, Antwerp
+        |""".stripMargin
+    alert.setContentText(about)
+    alert.show()
   }
 
   /**

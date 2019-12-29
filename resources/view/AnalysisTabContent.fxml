@@ -33,8 +33,8 @@
           <ComboBox fx:id="analysisTypeComboBox" minWidth="-1.0" prefHeight="21.0" prefWidth="350.0" HBox.hgrow="ALWAYS">
             <items>
               <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Words starting with letter in alphabet" />
-                <String fx:value="Words ending with letter in alphabet" />
+                <String fx:value="Frequency of words starting with letter in alphabet" />
+                <String fx:value="Frequency of words ending with letter in alphabet" />
                 <String fx:value="Frequency of letter in alphabet" />
                 <String fx:value="Vowels and consonants" />
                 <String fx:value="Number of words starting with most frequent bigrams" />
