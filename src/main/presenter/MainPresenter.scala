@@ -33,39 +33,40 @@ class MainPresenter {
       if (files != null) {
         files.forEach(f => {
           val result = showAnalysisOptionDialog(f.getName)
-          val options = result.orElseThrow(() => new NoSuchElementException("No analysis options were given"))
-          val filename = options.getKey
-          val language = Languages.withName(options.getValue)
-          if (language == null) throw LanguageNotSupportedException("Language is not supported.")
-          val ioManager = new IOManager
-          val preprocessor = new Preprocessor
-          val processor = new Processor
-          val lines = ioManager.readFile(f.getPath)
-          val service = new Service[Analysis] {
-            override def createTask(): Task[Analysis] = () => {
-              val processedList =
-                lines.view.filter(!preprocessor.findSpaceLines(_))
-                  .map(preprocessor.removeSpaces)
-                  .to(Vector)
-              preprocessor.doLogging(processedList, filename)
-              processor.processText(processedList, filename, language)
+          result.ifPresent(options => {
+            val filename = options.getKey
+            val language = Languages.withName(options.getValue)
+            if (language == null) throw LanguageNotSupportedException("Language is not supported.")
+            val ioManager = new IOManager
+            val preprocessor = new Preprocessor
+            val processor = new Processor
+            val lines = ioManager.readFile(f.getPath)
+            val service = new Service[Analysis] {
+              override def createTask(): Task[Analysis] = () => {
+                val processedList =
+                  lines.view.filter(!preprocessor.findSpaceLines(_))
+                    .map(preprocessor.removeSpaces)
+                    .to(Vector)
+                preprocessor.doLogging(processedList, filename)
+                processor.processText(processedList, filename, language)
+              }
             }
-          }
-          val runningAlert = createAnalysisRunningDialog(filename, language, service)
-          service.setOnRunning(_ => runningAlert.showAndWait())
-          service.setOnSucceeded(_ => {
-            runningAlert.close()
-            val analysis = service.getValue
-            openNewAnalysisTab(analysis)
-            ioManager.writeAnalysis(filename, analysis)
+            val runningAlert = createAnalysisRunningDialog(filename, language, service)
+            service.setOnRunning(_ => runningAlert.showAndWait())
+            service.setOnSucceeded(_ => {
+              runningAlert.close()
+              val analysis = service.getValue
+              openNewAnalysisTab(analysis)
+              ioManager.writeAnalysis(filename, analysis)
+            })
+            service.setOnFailed(_ => {
+              showErrorDialog(new Exception("Analysis failed."))
+            })
+            service.setOnCancelled(_ => {
+              println("Analysis cancelled!")
+            })
+            service.start()
           })
-          service.setOnFailed(_ => {
-            showErrorDialog(new Exception("Analysis failed."))
-          })
-          service.setOnCancelled(_ => {
-            println("Analysis cancelled!")
-          })
-          service.start()
         })
       }
     }
