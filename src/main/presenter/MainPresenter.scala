@@ -3,7 +3,7 @@ package presenter
 import java.util.Optional
 
 import exception.LanguageNotSupportedException
-import javafx.collections.{FXCollections, ObservableList}
+import javafx.collections.FXCollections
 import javafx.concurrent.{Service, Task}
 import javafx.fxml.{FXML, FXMLLoader}
 import javafx.geometry.Insets
