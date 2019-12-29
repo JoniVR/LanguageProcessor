@@ -13,7 +13,7 @@ import javafx.scene.control._
 import javafx.scene.layout.{BorderPane, GridPane, Region}
 import javafx.stage.{FileChooser, Stage}
 import javafx.util.Pair
-import model.{Analysis, Languages, Preprocessor, Processor}
+import model.{Analysis, AnalysisService, Languages, Preprocessor, Processor}
 import org.apache.log4j.Logger
 import utilities.IOManager
 
@@ -31,40 +31,17 @@ class MainPresenter {
     try {
       val files = fileChooser.showOpenMultipleDialog(new Stage())
       if (files != null) {
+        val ioManager = new IOManager
         files.forEach(f => {
           val result = showAnalysisOptionDialog(f.getName)
           result.ifPresent(options => {
             val filename = options.getKey
             val language = Languages.withName(options.getValue)
             if (language == null) throw LanguageNotSupportedException("Language is not supported.")
-            val ioManager = new IOManager
-            val preprocessor = new Preprocessor
-            val processor = new Processor
             val lines = ioManager.readFile(f.getPath)
-            val service = new Service[Analysis] {
-              override def createTask(): Task[Analysis] = () => {
-                val processedList =
-                  lines.view.filter(!preprocessor.findSpaceLines(_))
-                    .map(preprocessor.removeSpaces)
-                    .to(Vector)
-                preprocessor.doLogging(processedList, filename)
-                processor.processText(processedList, filename, language)
-              }
-            }
-            val runningAlert = createAnalysisRunningDialog(filename, language, service)
-            service.setOnRunning(_ => runningAlert.showAndWait())
-            service.setOnSucceeded(_ => {
-              runningAlert.close()
-              val analysis = service.getValue
-              openNewAnalysisTab(analysis)
-              ioManager.writeAnalysis(filename, analysis)
-            })
-            service.setOnFailed(_ => {
-              showErrorDialog(new Exception("Analysis failed."))
-            })
-            service.setOnCancelled(_ => {
-              println("Analysis cancelled!")
-            })
+            val service = new AnalysisService(lines, filename, language)
+            val runningAlert = createAnalysisRunningDialog(service, filename, language)
+            configureService(service, runningAlert, filename)
             service.start()
           })
         })
@@ -189,11 +166,11 @@ class MainPresenter {
     result
   }
 
-  def createAnalysisRunningDialog(name: String, language: Languages.Value, service: Service[Analysis]): Dialog[Void] = {
+  private def createAnalysisRunningDialog(service: Service[Analysis], filename: String, language: Languages.Value): Dialog[Void] = {
     val dialog = new Dialog[Void]
     dialog.setTitle("Analysis in progress")
     dialog.setHeaderText("A new file is being analysed.\nThis might take a while.")
-    dialog.setContentText(s"Name: $name\nLanguage: $language")
+    dialog.setContentText(s"Name: $filename\nLanguage: $language")
 
     val cancelButtonType = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE)
     dialog.getDialogPane.getButtonTypes.add(cancelButtonType)
@@ -210,5 +187,22 @@ class MainPresenter {
     dialog.setGraphic(progress)
 
     dialog
+  }
+
+  private def configureService(service: AnalysisService, alert: Dialog[Void], filename: String): Unit = {
+    service.setOnRunning(_ => alert.showAndWait())
+    service.setOnSucceeded(_ => {
+      alert.close()
+      val analysis = service.getValue
+      openNewAnalysisTab(analysis)
+      val io = new IOManager
+      io.writeAnalysis(filename, analysis)
+    })
+    service.setOnFailed(_ => {
+      showErrorDialog(new Exception("Analysis failed."))
+    })
+    service.setOnCancelled(_ => {
+      println("Analysis cancelled!")
+    })
   }
 }
