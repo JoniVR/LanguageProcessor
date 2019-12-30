@@ -40,7 +40,7 @@ class MainPresenter {
             val preprocessor = new Preprocessor
             val processor = new Processor
             val lines = IOManager.readFile(f.getPath)
-            configureAnalysisService(filename, language, onStart = {
+            configureAnalysisService(filename, language, task = {
               val processedList =
                 lines.view.filter(!preprocessor.findSpaceLines(_))
                   .map(preprocessor.removeSpaces)
@@ -193,11 +193,9 @@ class MainPresenter {
     dialog
   }
 
-  def configureAnalysisService(filename: String, language: Languages.Value, onStart: => Analysis): Unit = {
+  def configureAnalysisService(filename: String, language: Languages.Value, task: => Analysis): Unit = {
     val service = new Service[Analysis] {
-      override def createTask(): Task[Analysis] = () => {
-        onStart
-      }
+      override def createTask(): Task[Analysis] = () => task
     }
     val runningAlert = createAnalysisRunningDialog(filename, language, service)
     service.setOnRunning(_ => runningAlert.showAndWait())
