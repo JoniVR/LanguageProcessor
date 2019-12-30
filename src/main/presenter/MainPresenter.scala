@@ -193,7 +193,7 @@ class MainPresenter {
     dialog
   }
 
-  def configureAnalysisService[T](filename: String, language: Languages.Value, onStart: => Analysis): Unit = {
+  def configureAnalysisService(filename: String, language: Languages.Value, onStart: => Analysis): Unit = {
     val service = new Service[Analysis] {
       override def createTask(): Task[Analysis] = () => {
         onStart
