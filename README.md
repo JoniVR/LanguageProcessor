@@ -7,7 +7,7 @@ This project aims to provide metrics and language visualisation data for specifi
 It was created as a school project.
 It's fully written in scala using Functional Programming.
 
-![Screenshot](./.github/screenshot1.png)
+![Screenshot](./.github/Screenshot1.png)
 
 ## License
 
